@@ -146,4 +146,222 @@ document.addEventListener('DOMContentLoaded', () => {
         // Setup initial cursor
         carouselContainer.style.cursor = 'w-resize';
     }
+
+    // --- AUTH MODAL (LOGIN / REGISTER) ---
+    const injectAuthModal = () => {
+        if (document.getElementById('auth-modal')) return;
+
+        const modalHtml = `
+<div class="auth-modal" id="auth-modal">
+  <div class="auth-modal-overlay" id="auth-modal-overlay"></div>
+  <div class="auth-modal-container">
+    <button class="auth-modal-close" id="auth-modal-close" aria-label="Cerrar modal">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <div class="auth-modal-content">
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Iniciar Sesión</button>
+        <button class="auth-tab" data-tab="register">Registrarse</button>
+      </div>
+
+      <!-- Login Form -->
+      <form class="auth-form active" id="login-form">
+        <h3 class="auth-form-title">¡Hola! Ingresa tu correo y contraseña</h3>
+        
+        <div class="auth-input-group">
+          <label for="login-email">Correo electrónico</label>
+          <div class="auth-input-wrapper">
+            <i class="fa-regular fa-envelope input-icon"></i>
+            <input type="email" id="login-email" placeholder="ejemplo@correo.com" required>
+          </div>
+        </div>
+
+        <div class="auth-input-group">
+          <div class="auth-label-row">
+            <label for="login-password">Contraseña</label>
+            <a href="#" class="auth-forgot-link">¿Olvidaste tu contraseña?</a>
+          </div>
+          <div class="auth-input-wrapper">
+            <i class="fa-solid fa-lock input-icon"></i>
+            <input type="password" id="login-password" placeholder="Tu contraseña" required>
+            <button type="button" class="auth-toggle-pwd" aria-label="Mostrar contraseña">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="auth-options-row">
+          <label class="auth-checkbox-label">
+            <input type="checkbox" id="login-remember">
+            <span>Recordarme en este dispositivo</span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn-auth-submit">Ingresar</button>
+
+        <div class="auth-divider">
+          <span>O ingresar con</span>
+        </div>
+
+        <div class="auth-social-buttons">
+          <button type="button" class="btn-auth-social google">
+            <i class="fa-brands fa-google"></i> Google
+          </button>
+          <button type="button" class="btn-auth-social facebook">
+            <i class="fa-brands fa-facebook-f"></i> Facebook
+          </button>
+        </div>
+      </form>
+
+      <!-- Register Form -->
+      <form class="auth-form" id="register-form">
+        <h3 class="auth-form-title">Crea tu cuenta Topitop</h3>
+
+        <div class="auth-input-group">
+          <label for="register-name">Nombre completo</label>
+          <div class="auth-input-wrapper">
+            <i class="fa-regular fa-user input-icon"></i>
+            <input type="text" id="register-name" placeholder="Tu nombre y apellido" required>
+          </div>
+        </div>
+        
+        <div class="auth-input-group">
+          <label for="register-email">Correo electrónico</label>
+          <div class="auth-input-wrapper">
+            <i class="fa-regular fa-envelope input-icon"></i>
+            <input type="email" id="register-email" placeholder="ejemplo@correo.com" required>
+          </div>
+        </div>
+
+        <div class="auth-input-group">
+          <label for="register-password">Contraseña</label>
+          <div class="auth-input-wrapper">
+            <i class="fa-solid fa-lock input-icon"></i>
+            <input type="password" id="register-password" placeholder="Mínimo 8 caracteres" required>
+            <button type="button" class="auth-toggle-pwd" aria-label="Mostrar contraseña">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="auth-options-row">
+          <label class="auth-checkbox-label">
+            <input type="checkbox" id="register-terms" required>
+            <span>Acepto los <a href="#" class="auth-terms-link">Términos y condiciones</a> y las <a href="#" class="auth-terms-link">Políticas de Privacidad</a></span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn-auth-submit">Registrarse</button>
+
+        <div class="auth-divider">
+          <span>O registrarse con</span>
+        </div>
+
+        <div class="auth-social-buttons">
+          <button type="button" class="btn-auth-social google">
+            <i class="fa-brands fa-google"></i> Google
+          </button>
+          <button type="button" class="btn-auth-social facebook">
+            <i class="fa-brands fa-facebook-f"></i> Facebook
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        setupModalEvents();
+    };
+
+    const setupModalEvents = () => {
+        const modal = document.getElementById('auth-modal');
+        const overlay = document.getElementById('auth-modal-overlay');
+        const closeBtn = document.getElementById('auth-modal-close');
+        const tabs = modal.querySelectorAll('.auth-tab');
+        const forms = modal.querySelectorAll('.auth-form');
+        const togglePwdBtns = modal.querySelectorAll('.auth-toggle-pwd');
+
+        // Close functions
+        const closeModal = () => {
+            modal.classList.remove('open');
+            document.body.style.overflow = '';
+        };
+
+        closeBtn.addEventListener('click', closeModal);
+        overlay.addEventListener('click', closeModal);
+
+        // Escape key to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('open')) {
+                closeModal();
+            }
+        });
+
+        // Tab switching
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetTab = tab.dataset.tab;
+                
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                forms.forEach(form => {
+                    if (form.id === `${targetTab}-form`) {
+                        form.classList.add('active');
+                    } else {
+                        form.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // Password visibility toggle
+        togglePwdBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const input = btn.previousElementSibling;
+                const icon = btn.querySelector('i');
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.className = 'fa-regular fa-eye-slash';
+                } else {
+                    input.type = 'password';
+                    icon.className = 'fa-regular fa-eye';
+                }
+            });
+        });
+
+        // Form submission (simulated for clean UI feedback)
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            alert(`¡Bienvenido de nuevo a Topitop, ${email}!`);
+            closeModal();
+        });
+
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('register-name').value;
+            alert(`¡Registro exitoso! Bienvenido ${name} a la experiencia Topitop.`);
+            closeModal();
+        });
+    };
+
+    // Bind click to open auth modal
+    const userIcon = document.querySelector('.header-actions .fa-user');
+    if (userIcon) {
+        const userBtn = userIcon.closest('a');
+        if (userBtn) {
+            userBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                injectAuthModal();
+                const modal = document.getElementById('auth-modal');
+                modal.classList.add('open');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            });
+        }
+    }
 });
