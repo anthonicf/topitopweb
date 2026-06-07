@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acceso Administrativo | Topitop Admin</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --primary-color: #8b0000;
+      --primary-hover: #a00000;
+      --bg-dark: #0f0f12;
+      --bg-card: #17171e;
+      --border-color: #2e2e3f;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --error-bg: rgba(239, 68, 68, 0.1);
+      --error-text: #ef4444;
+      --success-bg: rgba(16, 185, 129, 0.1);
+      --success-text: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Background decorative glow */
+    .glow-bg {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(139, 0, 0, 0.15) 0%, rgba(15, 15, 18, 0) 70%);
+      top: -10%;
+      right: -10%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .glow-bg-bottom {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(139, 0, 0, 0.1) 0%, rgba(15, 15, 18, 0) 70%);
+      bottom: -15%;
+      left: -10%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .login-container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 420px;
+      background-color: var(--bg-card);
+      border: 1px stroke var(--border-color);
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+      padding: 40px;
+      backdrop-filter: blur(10px);
+    }
+
+    .logo-area {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo-area h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      color: var(--text-main);
+    }
+
+    .logo-area h1 span {
+      color: var(--primary-color);
+    }
+
+    .logo-area p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-wrapper i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      background-color: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 14px 14px 14px 42px;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+
+    .input-wrapper input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(139, 0, 0, 0.2);
+    }
+
+    /* Feedback Alert style */
+    .alert {
+      display: none;
+      align-items: center;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+      gap: 10px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .alert-error {
+      background-color: var(--error-bg);
+      color: var(--error-text);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    .alert-success {
+      background-color: var(--success-bg);
+      color: var(--success-text);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .btn-login {
+      width: 100%;
+      background-color: var(--primary-color);
+      color: var(--text-main);
+      border: none;
+      border-radius: 8px;
+      padding: 14px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .btn-login:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .btn-login:active {
+      transform: scale(0.98);
+    }
+
+    .btn-login:disabled {
+      background-color: var(--border-color);
+      color: var(--text-muted);
+      cursor: not-allowed;
+    }
+
+    .spinner {
+      animation: rotate 1s linear infinite;
+      display: none;
+    }
+
+    @keyframes rotate {
+      100% { transform: rotate(360deg); }
+    }
+
+    .back-store {
+      text-align: center;
+      margin-top: 25px;
+    }
+
+    .back-store a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s ease;
+    }
+
+    .back-store a:hover {
+      color: var(--text-main);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="glow-bg"></div>
+  <div class="glow-bg-bottom"></div>
+
+  <main class="login-container">
+    <div class="logo-area">
+      <h1>Topi<span>top</span></h1>
+      <p>Panel de Gestión de Portada</p>
+    </div>
+
+    <!-- Feedback alert container -->
+    <div id="alert-box" class="alert alert-error">
+      <i class="fa-solid fa-circle-exclamation"></i>
+      <span id="alert-message">Error de credenciales</span>
+    </div>
+
+    <form id="login-form">
+      <div class="form-group">
+        <label for="admin-email">Correo Electrónico</label>
+        <div class="input-wrapper">
+          <i class="fa-regular fa-envelope"></i>
+          <input type="email" id="admin-email" placeholder="admin@topitop.pe" required autocomplete="username">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="admin-password">Contraseña</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" id="admin-password" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+      </div>
+
+      <button type="submit" id="submit-btn" class="btn-login">
+        <span>Ingresar</span>
+        <i class="fa-solid fa-circle-notch spinner" id="login-spinner"></i>
+      </button>
+    </form>
+
+    <div class="back-store">
+      <a href="../../../index.html"><i class="fa-solid fa-arrow-left"></i> Volver a la Tienda</a>
+    </div>
+  </main>
+
+  <script type="module">
+    import AdminAuthController from '../../controllers/AdminAuthController.js';
+
+    // VIEW layer - Login presentation controller
+    document.addEventListener('DOMContentLoaded', () => {
+      const authController = new AdminAuthController();
+
+      // Redirige al dashboard si ya está autenticado
+      if (authController.isAuthenticated()) {
+        window.location.replace('./dashboard.html');
+      }
+
+      const loginForm = document.getElementById('login-form');
+      const emailInput = document.getElementById('admin-email');
+      const passwordInput = document.getElementById('admin-password');
+      const submitButton = document.getElementById('submit-btn');
+      const spinner = document.getElementById('login-spinner');
+      const alertBox = document.getElementById('alert-box');
+      const alertMessage = document.getElementById('alert-message');
+
+      /**
+       * Presenta feedback visual de error o éxito al usuario.
+       * Clean Code: Responsabilidad única (representación UI).
+       */
+      const showFeedback = (message, isSuccess = false) => {
+        alertBox.className = isSuccess ? 'alert alert-success' : 'alert alert-error';
+        alertBox.querySelector('i').className = isSuccess 
+          ? 'fa-solid fa-circle-check' 
+          : 'fa-solid fa-circle-exclamation';
+        alertMessage.textContent = message;
+        alertBox.style.display = 'flex';
+      };
+
+      const hideFeedback = () => {
+        alertBox.style.display = 'none';
+      };
+
+      /**
+       * Maneja el flujo de login llamando al controlador.
+       * Clean Code: Control de estados de carga y manejo de errores.
+       */
+      loginForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        hideFeedback();
+        
+        // Bloquear UI durante la carga
+        submitButton.disabled = true;
+        spinner.style.display = 'inline-block';
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
+
+        try {
+          // Llamamos al controlador de autenticación (Capa Controller)
+          await authController.login(email, password);
+          
+          showFeedback('¡Acceso concedido! Redirigiendo...', true);
+          
+          setTimeout(() => {
+            window.location.replace('./dashboard.html');
+          }, 800);
+        } catch (error) {
+          showFeedback(error.message);
+          submitButton.disabled = false;
+          spinner.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración | Topitop Admin</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- PROTECTION GUARD: Clean Code auth checker executing before body rendering -->
+  <script type="module" src="../../utils/authGuard.js"></script>
+
+  <style>
+    :root {
+      --primary-color: #8b0000;
+      --primary-hover: #a00000;
+      --bg-dark: #0f0f12;
+      --bg-sidebar: #17171e;
+      --bg-card: #1d1d26;
+      --border-color: #2e2e3f;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --status-active-bg: rgba(16, 185, 129, 0.15);
+      --status-active-text: #10b981;
+      --status-inactive-bg: rgba(239, 68, 68, 0.15);
+      --status-inactive-text: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Layout structure */
+    .sidebar {
+      width: 260px;
+      background-color: var(--bg-sidebar);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 100;
+    }
+
+    .sidebar-header {
+      padding: 24px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar-header h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.05em;
+    }
+
+    .sidebar-header h2 span {
+      color: var(--primary-color);
+    }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 20px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex-grow: 1;
+    }
+
+    .menu-item button {
+      width: 100%;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .menu-item button:hover {
+      background-color: rgba(255, 255, 255, 0.03);
+      color: var(--text-main);
+    }
+
+    .menu-item.active button {
+      background-color: var(--primary-color);
+      color: var(--text-main);
+    }
+
+    .sidebar-footer {
+      padding: 20px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .btn-logout {
+      width: 100%;
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-logout:hover {
+      background: #ef4444;
+      color: var(--text-main);
+    }
+
+    .main-content {
+      margin-left: 260px;
+      flex-grow: 1;
+      padding: 40px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .content-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .content-header h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
+    }
+
+    .btn-primary-action {
+      background-color: var(--primary-color);
+      color: var(--text-main);
+      border: none;
+      border-radius: 8px;
+      padding: 10px 18px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn-primary-action:hover {
+      background-color: var(--primary-hover);
+    }
+
+    /* Cards and Tables style */
+    .data-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      flex-grow: 1;
+    }
+
+    /* Feedback message toast */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .toast {
+      padding: 14px 20px;
+      border-radius: 8px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideIn 0.3s ease;
+      min-width: 300px;
+    }
+
+    .toast-success {
+      background-color: var(--status-active-bg);
+      color: var(--status-active-text);
+      border-left: 4px solid var(--status-active-text);
+    }
+
+    .toast-error {
+      background-color: var(--status-inactive-bg);
+      color: var(--status-inactive-text);
+      border-left: 4px solid var(--status-inactive-text);
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* Loader style */
+    .loading-overlay {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 300px;
+    }
+
+    .loading-spinner {
+      font-size: 2rem;
+      color: var(--text-muted);
+      animation: rotate 1s linear infinite;
+    }
+
+    @keyframes rotate {
+      100% { transform: rotate(360deg); }
+    }
+
+    /* --- ADMIN TABLE DYNAMIC STRUCTURES (Clean Code DRY) --- */
+    .admin-table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table.admin-table {
+      width: 100%;
+      table-layout: fixed; /* Distribuye columnas por ancho definido en colgroup, no por contenido */
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .admin-table th {
+      background-color: var(--bg-sidebar);
+      color: var(--text-main);
+      padding: 12px 14px;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.85rem;
+    }
+
+    td.admin-td {
+      vertical-align: middle;
+      padding: 10px 12px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.85rem;
+    }
+
+    td.admin-td-image {
+      padding: 6px 8px;
+      width: 100px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    img.admin-table-thumbnail {
+      width: 80px;        /* ancho fijo */
+      height: 80px;       /* alto fijo */
+      object-fit: cover;  /* recorta sin deformar */
+      border-radius: 6px;
+      display: block;
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-dark);
+    }
+
+    .admin-table tbody tr {
+      transition: background-color 0.2s ease;
+    }
+
+    .admin-table tbody tr:hover {
+      background-color: rgba(255, 255, 255, 0.02);
+    }
+
+    .admin-table tr.inactive {
+      opacity: 0.5;
+    }
+
+    .badge {
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .badge-active {
+      background-color: var(--status-active-bg);
+      color: var(--status-active-text);
+    }
+
+    .badge-inactive {
+      background-color: var(--status-inactive-bg);
+      color: var(--status-inactive-text);
+    }
+
+    .actions-cell {
+      display: flex;
+      gap: 6px;
+      overflow: visible !important;
+    }
+
+    td.admin-td.actions-cell {
+      padding: 10px 6px;
+    }
+
+    .btn-action {
+      background: none;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-action:hover {
+      background-color: var(--border-color);
+    }
+
+    .btn-action-delete {
+      color: #ef4444;
+      border-color: rgba(239, 68, 68, 0.2);
+    }
+
+    .btn-action-delete:hover {
+      background-color: #ef4444;
+      color: var(--text-main);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>Topi<span>top</span></h2>
+      <span style="font-size: 0.75rem; background: var(--border-color); padding: 2px 6px; border-radius: 4px; color: var(--text-muted);">ADMIN</span>
+    </div>
+    
+    <nav>
+      <ul class="sidebar-menu">
+        <li class="menu-item active" data-section="top">
+          <button><i class="fa-solid fa-star"></i> Lo más TOP</button>
+        </li>
+        <li class="menu-item" data-section="search">
+          <button><i class="fa-solid fa-magnifying-glass"></i> Lo más buscado</button>
+        </li>
+        <li class="menu-item" data-section="kids">
+          <button><i class="fa-solid fa-child"></i> Kids TOP</button>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button id="logout-btn" class="btn-logout">
+        <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <header class="content-header">
+      <div>
+        <h1 id="section-title">Sección "Lo más TOP"</h1>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Edita los productos destacados de la página de inicio.</p>
+      </div>
+      <button id="add-item-btn" class="btn-primary-action">
+        <i class="fa-solid fa-plus"></i> Agregar Nuevo
+      </button>
+    </header>
+
+    <!-- Content Table Container -->
+    <section class="data-card" id="content-container">
+      <!-- Loaded dynamically via fetch -->
+    </section>
+  </main>
+
+  <!-- Container for Toast Notifications -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Modal Container (loaded dynamically) -->
+  <div id="modal-container"></div>
+
+  <script type="module" src="./dashboard.js"></script>
+</body>
+</html>
