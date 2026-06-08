@@ -107,14 +107,14 @@ async function renderTopSection() {
       : '';
 
     let itemHtml = template
-      .replace('{{urlImagen}}', item.urlImagen)
-      .replace('{{nombre}}', item.nombre)
-      .replace('{{color}}', item.color)
-      .replace('{{precio}}', item.precio.toFixed(2))
-      .replace('{{alignClass}}', visualMeta.alignClass)
-      .replace('{{textAlignClass}}', visualMeta.textAlignClass)
-      .replace('{{pointerArrow}}', visualMeta.pointerArrow)
-      .replace('{{discountBadge}}', discountHtml);
+      .replaceAll('{{urlImagen}}', item.urlImagen)
+      .replaceAll('{{nombre}}', item.nombre)
+      .replaceAll('{{color}}', item.color)
+      .replaceAll('{{precio}}', item.precio.toFixed(2))
+      .replaceAll('{{alignClass}}', visualMeta.alignClass)
+      .replaceAll('{{textAlignClass}}', visualMeta.textAlignClass)
+      .replaceAll('{{pointerArrow}}', visualMeta.pointerArrow)
+      .replaceAll('{{discountBadge}}', discountHtml);
 
     htmlResult += itemHtml;
   });
@@ -139,9 +139,9 @@ async function renderSearchSection() {
 
   activeItems.forEach(item => {
     let itemHtml = template
-      .replace('{{urlImagen}}', item.urlImagen)
-      .replace('{{categoria}}', item.categoria)
-      .replace('{{subcategoria}}', item.subcategoria.toUpperCase());
+      .replaceAll('{{urlImagen}}', item.urlImagen)
+      .replaceAll('{{categoria}}', item.categoria)
+      .replaceAll('{{subcategoria}}', item.subcategoria.toUpperCase());
 
     htmlResult += itemHtml;
   });
@@ -175,8 +175,8 @@ async function renderKidsSection() {
 
   sortedActiveItems.forEach((item, index) => {
     let itemHtml = template
-      .replace('{{urlImagen}}', item.urlImagen)
-      .replace('${orden}', index + 1);
+      .replaceAll('{{urlImagen}}', item.urlImagen)
+      .replaceAll('${orden}', index + 1);
 
     htmlResult += itemHtml;
   });

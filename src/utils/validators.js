@@ -60,20 +60,24 @@ export function isValidUrl(urlString) {
   }
 }
 
-/**
- * Valida si una URL apunta a un formato de imagen común.
- * @param {string} imageUrlString 
- * @returns {boolean}
- */
 export function isValidImageUrl(imageUrlString) {
-  if (!isValidUrl(imageUrlString)) return false;
+  if (!isNonEmptyString(imageUrlString)) return false;
   
   // Limpiamos parámetros de consulta para la validación de la extensión
   const urlWithoutParams = imageUrlString.split('?')[0];
   const imageRegex = /\.(jpeg|jpg|gif|png|webp|svg|bmp)$/i;
   
-  // Aceptamos urls que terminen en extensión o que contengan patrones comunes de CDN de imágenes
-  return imageRegex.test(urlWithoutParams) || imageUrlString.includes('images') || imageUrlString.includes('placeholder');
+  const isImagePattern = imageRegex.test(urlWithoutParams) || 
+                         imageUrlString.includes('images') || 
+                         imageUrlString.includes('placeholder');
+
+  // Si tiene formato de URL absoluta (con protocolo), validamos que sea URL válida
+  if (imageUrlString.includes('://') || imageUrlString.startsWith('//')) {
+    return isValidUrl(imageUrlString) && isImagePattern;
+  }
+
+  // Si es una ruta local/relativa, solo validamos que cumpla con el patrón de imagen
+  return isImagePattern;
 }
 
 /**

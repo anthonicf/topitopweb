@@ -48,8 +48,14 @@ function showToast(message, isError = false) {
 
   // Autoeliminación del toast tras 4 segundos
   setTimeout(() => {
-    toast.style.animation = 'slideIn 0.3s ease reverse';
+    toast.style.animation = 'slideOut 0.3s ease forwards';
     toast.addEventListener('animationend', () => toast.remove());
+    // Failsafe in case animationend does not fire (e.g. background tab or prefers-reduced-motion)
+    setTimeout(() => {
+      if (toast.parentNode) {
+        toast.remove();
+      }
+    }, 350);
   }, 4000);
 }
 
