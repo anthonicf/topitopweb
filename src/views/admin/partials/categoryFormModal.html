@@ -47,13 +47,8 @@
   }
   .modal-body {
     padding: 24px;
-    max-height: 75vh;
+    max-height: 70vh;
     overflow-y: auto;
-  }
-  .modal-grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
   }
   .modal-form-group {
     margin-bottom: 16px;
@@ -65,7 +60,9 @@
     margin-bottom: 6px;
     color: var(--text-main);
   }
-  .modal-form-group input, 
+  .modal-form-group input[type="text"], 
+  .modal-form-group input[type="number"], 
+  .modal-form-group textarea, 
   .modal-form-group select {
     width: 100%;
     background-color: var(--bg-dark);
@@ -77,6 +74,7 @@
     transition: border-color 0.2s ease;
   }
   .modal-form-group input:focus, 
+  .modal-form-group textarea:focus, 
   .modal-form-group select:focus {
     outline: none;
     border-color: var(--primary-color);
@@ -91,80 +89,7 @@
     width: auto;
     cursor: pointer;
   }
-  /* Image preview section */
-  .preview-section {
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    background-color: rgba(255, 255, 255, 0.02);
-    border: 1px dashed var(--border-color);
-    border-radius: 8px;
-    padding: 16px;
-    margin-top: 12px;
-  }
-  .preview-img-container {
-    width: 80px;
-    height: 80px;
-    border-radius: 6px;
-    overflow: hidden;
-    border: 1px solid var(--border-color);
-    background-color: var(--bg-dark);
-    flex-shrink: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .preview-img-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .preview-info {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-  }
-  .modal-footer {
-    padding: 18px 24px;
-    border-top: 1px solid var(--border-color);
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    background-color: rgba(255, 255, 255, 0.01);
-  }
-  .btn-modal {
-    padding: 10px 18px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  .btn-modal-cancel {
-    background: none;
-    border: 1px solid var(--border-color);
-    color: var(--text-main);
-  }
-  .btn-modal-cancel:hover {
-    background-color: rgba(255, 255, 255, 0.03);
-  }
-  .btn-modal-save {
-    background-color: var(--primary-color);
-    border: none;
-    color: var(--text-main);
-  }
-  .btn-modal-save:hover {
-    background-color: var(--primary-hover);
-  }
-
-  @keyframes modalFadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  @keyframes modalSlideUp {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-
+  
   /* Image selection tabs and dropzone */
   .image-tabs {
     display: flex;
@@ -216,10 +141,6 @@
   .image-dropzone i {
     font-size: 1.8rem;
     color: var(--text-muted);
-    transition: color 0.2s ease;
-  }
-  .image-dropzone:hover i, .image-dropzone.dragover i {
-    color: var(--primary-color);
   }
   .dropzone-text {
     font-size: 0.85rem;
@@ -260,32 +181,120 @@
     color: #ef4444;
     cursor: pointer;
     font-size: 0.95rem;
-    transition: color 0.2s ease;
-    padding: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
-  .btn-remove-file:hover {
-    color: #ff6b6b;
+  .preview-section {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px dashed var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 12px;
+  }
+  .preview-img-container {
+    width: 80px;
+    height: 80px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-dark);
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .preview-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .preview-info {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .modal-footer {
+    padding: 18px 24px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    background-color: rgba(255, 255, 255, 0.01);
+  }
+  .btn-modal {
+    padding: 10px 18px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .btn-modal-cancel {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+  }
+  .btn-modal-cancel:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+  }
+  .btn-modal-save {
+    background-color: var(--primary-color);
+    border: none;
+    color: var(--text-main);
+  }
+  .btn-modal-save:hover {
+    background-color: var(--primary-hover);
+  }
+
+  @keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes modalSlideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
   }
 </style>
 
-<div class="modal-overlay" id="item-modal-overlay">
+<div class="modal-overlay" id="category-modal-overlay">
   <div class="modal-wrapper">
     
     <header class="modal-header">
-      <h3 id="modal-title">Agregar Item</h3>
+      <h3 id="modal-title">Agregar Categoría</h3>
       <button class="btn-close-modal" id="modal-close-btn">&times;</button>
     </header>
 
-    <form id="item-form">
+    <form id="category-form">
       <div class="modal-body">
         
-        <!-- URL de imagen (Común para todas las secciones) -->
         <div class="modal-form-group">
-          <label>Imagen del Elemento</label>
-          
+          <label for="form-nombre">Nombre de la Categoría *</label>
+          <input type="text" id="form-nombre" name="nombre" placeholder="Ej: Camisas de Lino" required>
+        </div>
+
+        <div class="modal-form-group">
+          <label for="form-descripcion">Descripción</label>
+          <textarea id="form-descripcion" name="descripcion" placeholder="Escriba sobre esta categoría..."></textarea>
+        </div>
+
+        <div class="modal-form-group">
+          <label for="form-collection-id">Colección *</label>
+          <select id="form-collection-id" name="collectionId" required>
+            <option value="hombre">HombreTop</option>
+            <option value="mujer">MujerTop</option>
+            <option value="kids">KidsTop</option>
+          </select>
+        </div>
+
+        <div class="modal-form-group">
+          <label for="form-slug">Slug URL (Auto-generado)</label>
+          <input type="text" id="form-slug" name="slug" placeholder="ej: camisas-de-lino">
+        </div>
+
+        <!-- Imagen de Portada (con tabs y dropzone) -->
+        <div class="modal-form-group">
+          <label>Imagen de Portada *</label>
           <div class="image-tabs">
             <button type="button" class="image-tab-btn active" id="btn-tab-upload">
               <i class="fa-solid fa-cloud-arrow-up"></i> Subir Archivo
@@ -295,12 +304,11 @@
             </button>
           </div>
 
-          <!-- Tab 1: Subir Archivo -->
           <div id="tab-content-upload">
             <div class="image-dropzone" id="dropzone-area">
               <i class="fa-solid fa-cloud-arrow-up"></i>
               <p class="dropzone-text">Arrastra una imagen aquí o <span>haz clic para buscar</span></p>
-              <p class="dropzone-subtext">PNG, JPG, WEBP o SVG (Compresión automática integrada)</p>
+              <p class="dropzone-subtext">PNG, JPG, WEBP o SVG (Máx. 2MB)</p>
               <input type="file" id="form-file-input" accept="image/*" style="display: none;">
             </div>
             
@@ -310,16 +318,15 @@
                   <i class="fa-solid fa-file-image" style="color: var(--primary-color);"></i>
                   <span id="uploaded-file-display-name">archivo.png</span>
                 </span>
-                <button type="button" class="btn-remove-file" id="btn-remove-uploaded-file" title="Eliminar imagen seleccionada">
+                <button type="button" class="btn-remove-file" id="btn-remove-uploaded-file" title="Eliminar imagen">
                   <i class="fa-solid fa-trash-can"></i>
                 </button>
               </div>
             </div>
           </div>
 
-          <!-- Tab 2: URL o Ruta Local -->
           <div id="tab-content-url" style="display: none;">
-            <input type="text" id="form-url-imagen" name="urlImagen" placeholder="Ej: images/TopModelos/modelo_1.png o URL web">
+            <input type="text" id="form-url-imagen" name="urlImagen" placeholder="Ej: images/HombresTopPage/portada.png o URL web">
           </div>
 
           <div class="preview-section">
@@ -333,71 +340,14 @@
           </div>
         </div>
 
-        <!-- Campos dinámicos para "Lo más TOP" -->
-        <div id="fields-top" style="display: none;">
-          <div class="modal-grid-2">
-            <div class="modal-form-group">
-              <label for="form-nombre">Nombre de la Prenda</label>
-              <input type="text" id="form-nombre" name="nombre" placeholder="Ej: Susana">
-            </div>
-            <div class="modal-form-group">
-              <label for="form-color">Color</label>
-              <input type="text" id="form-color" name="color" placeholder="Ej: BLANCO">
-            </div>
-          </div>
-
-          <div class="modal-grid-2">
-            <div class="modal-form-group">
-              <label for="form-precio">Precio (S/.)</label>
-              <input type="number" id="form-precio" name="precio" step="0.01" min="0" placeholder="Ej: 89.90">
-            </div>
-            <div class="modal-form-group">
-              <label for="form-descuento">Descuento (%) - Opcional</label>
-              <input type="number" id="form-descuento" name="descuento" min="0" max="100" placeholder="Ej: 20">
-            </div>
-          </div>
-
-          <div class="modal-form-group">
-            <label for="form-genero">Género</label>
-            <select id="form-genero" name="genero">
-              <option value="mujer">Mujer</option>
-              <option value="hombre">Hombre</option>
-              <option value="kids">Kids</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Campos dinámicos para "Lo más buscado" -->
-        <div id="fields-search" style="display: none;">
-          <div class="modal-form-group">
-            <label for="form-categoria">Categoría</label>
-            <select id="form-categoria" name="categoria">
-              <option value="Accesorios">Accesorios</option>
-              <option value="Calzados">Calzados</option>
-            </select>
-          </div>
-          <div class="modal-form-group">
-            <label for="form-subcategoria">Subcategoría</label>
-            <select id="form-subcategoria" name="subcategoria">
-              <option value="Mujer Top">Mujer Top</option>
-              <option value="Hombre Top">Hombre Top</option>
-              <option value="Kid Top">Kid Top</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Campos dinámicos para "Kids TOP" -->
-        <div id="fields-kids" style="display: none;">
-          <div class="modal-form-group">
-            <label for="form-orden">Orden de Visualización</label>
-            <input type="number" id="form-orden" name="orden" min="1" step="1" placeholder="Ej: 1">
-          </div>
-        </div>
-
-        <!-- Campo Activo (Común para todas las secciones) -->
         <div class="modal-form-group checkbox-group">
           <input type="checkbox" id="form-activo" name="activo" checked>
           <label for="form-activo">Visible públicamente (Activo)</label>
+        </div>
+
+        <div class="modal-form-group">
+          <label for="form-orden">Orden de Visualización</label>
+          <input type="number" id="form-orden" name="orden" min="1" step="1" placeholder="Ej: 1" value="1">
         </div>
 
       </div>

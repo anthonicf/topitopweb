@@ -1,0 +1,530 @@
+<style>
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: modalFadeIn 0.2s ease;
+  }
+  .modal-wrapper {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 650px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    animation: modalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .modal-header h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  .btn-close-modal {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  .btn-close-modal:hover {
+    color: var(--text-main);
+  }
+  .modal-body {
+    padding: 24px;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+  .form-section-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 14px;
+    margin-top: 10px;
+    border-left: 3px solid var(--primary-color);
+    padding-left: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .modal-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .modal-form-group {
+    margin-bottom: 16px;
+  }
+  .modal-form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: var(--text-main);
+  }
+  .modal-form-group input[type="text"], 
+  .modal-form-group input[type="number"], 
+  .modal-form-group textarea, 
+  .modal-form-group select {
+    width: 100%;
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: var(--text-main);
+    font-size: 0.9rem;
+    transition: border-color 0.2s ease;
+  }
+  .modal-form-group input:focus, 
+  .modal-form-group textarea:focus, 
+  .modal-form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+  }
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .checkbox-group input {
+    width: auto;
+    cursor: pointer;
+  }
+  
+  /* Chips and options checkboxes styles */
+  .variant-options-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+  }
+  .chip-label {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+  }
+  .chip-label input {
+    display: none;
+  }
+  .chip-label:hover {
+    background-color: rgba(255, 255, 255, 0.07);
+    color: var(--text-main);
+  }
+  .chip-label.active {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #fff;
+  }
+
+  /* Image input selector styles */
+  .image-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+    margin-top: 6px;
+  }
+  .image-tab-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+  }
+  .image-tab-btn:hover {
+    color: var(--text-main);
+    background-color: rgba(255, 255, 255, 0.03);
+  }
+  .image-tab-btn.active {
+    color: var(--text-main);
+    background-color: var(--primary-color);
+  }
+  .image-dropzone {
+    border: 2px dashed var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.01);
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .image-dropzone:hover, .image-dropzone.dragover {
+    border-color: var(--primary-color);
+    background-color: rgba(139, 0, 0, 0.05);
+  }
+  .image-dropzone i {
+    font-size: 1.5rem;
+    color: var(--text-muted);
+  }
+  .dropzone-text {
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  .dropzone-text span {
+    color: var(--primary-color);
+    text-decoration: underline;
+  }
+  .dropzone-subtext {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+  .uploaded-file-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+  }
+  .uploaded-file-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 260px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-main);
+  }
+  .btn-remove-file {
+    background: none;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  
+  /* Mandatory layout rule for previews */
+  img.product-preview {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-dark);
+  }
+  
+  .gallery-previews-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 10px;
+  }
+  .gallery-item-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    background-color: rgba(255, 255, 255, 0.01);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 8px;
+    position: relative;
+  }
+  .gallery-img-preview {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-dark);
+  }
+  .btn-remove-gallery-item {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background-color: rgba(239, 68, 68, 0.85);
+    border: none;
+    color: #fff;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 0.65rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-remove-gallery-item:hover {
+    background-color: #ef4444;
+  }
+
+  .modal-footer {
+    padding: 18px 24px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    background-color: rgba(255, 255, 255, 0.01);
+  }
+  .btn-modal {
+    padding: 10px 18px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .btn-modal-cancel {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+  }
+  .btn-modal-cancel:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+  }
+  .btn-modal-save {
+    background-color: var(--primary-color);
+    border: none;
+    color: var(--text-main);
+  }
+  .btn-modal-save:hover {
+    background-color: var(--primary-hover);
+  }
+  .btn-modal-secondary {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+  }
+  .btn-modal-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+
+  @keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes modalSlideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+</style>
+
+<div class="modal-overlay" id="product-modal-overlay">
+  <div class="modal-wrapper">
+    
+    <header class="modal-header">
+      <h3 id="modal-title">Agregar Producto</h3>
+      <button class="btn-close-modal" id="modal-close-btn">&times;</button>
+    </header>
+
+    <form id="product-form">
+      <div class="modal-body">
+        
+        <!-- SECCIÓN 1: INFORMACIÓN BÁSICA -->
+        <h4 class="form-section-title">Información Básica</h4>
+        
+        <div class="modal-form-group">
+          <label for="form-nombre">Nombre del Producto *</label>
+          <input type="text" id="form-nombre" name="nombre" placeholder="Ej: Camisa Slim Fit" required>
+        </div>
+
+        <div class="modal-form-group">
+          <label for="form-descripcion">Descripción</label>
+          <textarea id="form-descripcion" name="descripcion" rows="2" placeholder="Describa el diseño, material..."></textarea>
+        </div>
+
+        <div class="modal-grid-2">
+          <div class="modal-form-group">
+            <label for="form-collection-id">Colección</label>
+            <input type="text" id="form-collection-id" name="collectionId" readonly style="background-color: rgba(255,255,255,0.02); cursor: not-allowed; text-transform: capitalize;">
+          </div>
+          <div class="modal-form-group">
+            <label for="form-category-id">Categoría *</label>
+            <select id="form-category-id" name="categoryId" required>
+              <!-- Loaded dynamically -->
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-form-group">
+          <label for="form-slug">Slug URL (Auto-generado)</label>
+          <input type="text" id="form-slug" name="slug" placeholder="ej: camisa-slim-fit">
+        </div>
+
+        <!-- SECCIÓN 2: PRECIOS -->
+        <h4 class="form-section-title">Precios</h4>
+        <div class="modal-grid-2">
+          <div class="modal-form-group">
+            <label for="form-precio-original">Precio Original (S/) *</label>
+            <input type="number" id="form-precio-original" name="precioOriginal" step="0.01" min="0" placeholder="Ej: 99.90" required>
+          </div>
+          <div class="modal-form-group">
+            <label for="form-precio">Precio con Descuento (S/)</label>
+            <input type="number" id="form-precio" name="precio" step="0.01" min="0" placeholder="Ej: 79.90">
+          </div>
+        </div>
+        <div class="modal-form-group">
+          <label for="form-descuento-porcentaje">Porcentaje de Descuento (%)</label>
+          <input type="text" id="form-descuento-porcentaje" readonly disabled placeholder="Calculado automáticamente..." style="background-color: rgba(255,255,255,0.02);">
+        </div>
+
+        <!-- SECCIÓN 3: VARIANTES -->
+        <h4 class="form-section-title">Variantes</h4>
+        <div class="modal-form-group">
+          <label>Colores Disponibles *</label>
+          <div class="variant-options-grid" id="colors-options-container">
+            <!-- Chips checkbox for colors: Blanco, Azul, Negro, Beige, Gris, Rojo, Verde, Amarillo -->
+            <label class="chip-label"><input type="checkbox" name="colores" value="Blanco"> Blanco</label>
+            <label class="chip-label"><input type="checkbox" name="colores" value="Azul"> Azul</label>
+            <label class="chip-label"><input type="checkbox" name="colores" value="Negro"> Negro</label>
+            <label class="chip-label"><input type="checkbox" name="colores" value="Beige"> Beige</label>
+            <label class="chip-label"><input type="checkbox" name="colores" value="Gris"> Gris</label>
+            <label class="chip-label"><input type="checkbox" name="colores" value="Rojo"> Rojo</label>
+            <label class="chip-label"><input type="checkbox" name="colores" value="Verde"> Verde</label>
+            <label class="chip-label"><input type="checkbox" name="colores" value="Amarillo"> Amarillo</label>
+          </div>
+        </div>
+
+        <div class="modal-form-group">
+          <label>Tallas Disponibles *</label>
+          <div class="variant-options-grid" id="sizes-options-container">
+            <!-- Dynamically generated according to Strategy -->
+          </div>
+        </div>
+
+        <!-- Campos adicionales específicos por Colección -->
+        <div id="form-extra-fields-mujer" style="display: none;" class="modal-form-group">
+          <label for="form-tipo-tela">Tipo de Tela *</label>
+          <input type="text" id="form-tipo-tela" name="tipoTela" placeholder="Ej: Gasa, Seda, Algodón Pima">
+        </div>
+
+        <div id="form-extra-fields-kids" style="display: none;" class="modal-form-group">
+          <label for="form-edad-recomendada">Edad Recomendada *</label>
+          <input type="text" id="form-edad-recomendada" name="edadRecomendada" placeholder="Ej: 4-6 años, 10-12 meses">
+        </div>
+
+        <!-- SECCIÓN 4: IMÁGENES -->
+        <h4 class="form-section-title">Imágenes</h4>
+        
+        <!-- Imagen Principal -->
+        <div class="modal-form-group">
+          <label style="font-weight: 600;">Imagen Principal del Producto *</label>
+          <div class="image-tabs">
+            <button type="button" class="image-tab-btn active" id="btn-tab-upload-main">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Subir Archivo
+            </button>
+            <button type="button" class="image-tab-btn" id="btn-tab-url-main">
+              <i class="fa-solid fa-link"></i> URL o Ruta Local
+            </button>
+          </div>
+
+          <div id="tab-content-upload-main">
+            <div class="image-dropzone" id="dropzone-area-main">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <p class="dropzone-text">Arrastra una imagen aquí o <span>haz clic para buscar</span></p>
+              <p class="dropzone-subtext">PNG, JPG, WEBP o SVG (Máx. 2MB)</p>
+              <input type="file" id="form-file-input-main" accept="image/*" style="display: none;">
+            </div>
+            
+            <div id="file-info-container-main" style="display: none; margin-top: 10px;">
+              <div class="uploaded-file-info">
+                <span class="uploaded-file-name">
+                  <i class="fa-solid fa-file-image" style="color: var(--primary-color);"></i>
+                  <span id="uploaded-file-display-name-main">archivo.png</span>
+                </span>
+                <button type="button" class="btn-remove-file" id="btn-remove-uploaded-file-main" title="Eliminar imagen">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div id="tab-content-url-main" style="display: none;">
+            <input type="text" id="form-url-imagen" name="urlImagen" placeholder="Ej: images/HombresTopPage/producto.png o URL web">
+          </div>
+
+          <!-- Preview de 120x120px regulado por CSS obligatoria -->
+          <div class="preview-section" style="display: flex; gap: 16px; align-items: center; background-color: rgba(255,255,255,0.01); border: 1px dashed var(--border-color); padding: 12px; border-radius: 8px; margin-top: 10px;">
+            <div style="flex-shrink: 0;">
+              <img id="form-img-preview" src="https://placehold.co/150?text=Sin+Imagen" class="product-preview" alt="Vista previa">
+            </div>
+            <div class="preview-info">
+              <p style="font-weight: 500; color: var(--text-main);">Vista previa en tiempo real</p>
+              <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Tamaño recomendado de tarjeta: 400x500px</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Galería Adicional (Hasta 4 imágenes) -->
+        <div class="modal-form-group" style="margin-top: 20px;">
+          <label style="font-weight: 600;">Galería Adicional (Hasta 4 fotos)</label>
+          <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 8px;">
+            <button type="button" id="btn-add-gallery-photo" class="btn-primary-action" style="padding: 6px 12px; font-size: 0.8rem; background-color: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main);">
+              <i class="fa-solid fa-plus"></i> Agregar Imagen a Galería
+            </button>
+            <input type="file" id="gallery-file-input" accept="image/*" style="display: none;">
+          </div>
+          <p class="dropzone-subtext" style="margin-bottom: 8px;">Las fotos adicionales se mostrarán en la ficha técnica del producto.</p>
+          
+          <div class="gallery-previews-container" id="gallery-previews-list">
+            <!-- Dynamically populated previews of gallery -->
+          </div>
+        </div>
+
+        <!-- SECCIÓN 5: CONFIGURACIÓN -->
+        <h4 class="form-section-title">Configuración</h4>
+        <div class="modal-grid-2">
+          <div class="modal-form-group checkbox-group">
+            <input type="checkbox" id="form-activo" name="activo" checked>
+            <label for="form-activo">Visible públicamente (Activo)</label>
+          </div>
+          <div class="modal-form-group checkbox-group">
+            <input type="checkbox" id="form-destacado" name="destacado">
+            <label for="form-destacado">Marcar como Destacado (Lo más TOP)</label>
+          </div>
+        </div>
+
+        <div class="modal-form-group">
+          <label for="form-orden">Orden dentro de la Categoría</label>
+          <input type="number" id="form-orden" name="orden" min="0" step="1" placeholder="Ej: 1" value="0">
+        </div>
+
+      </div>
+
+      <footer class="modal-footer">
+        <button type="button" class="btn-modal btn-modal-cancel" id="modal-cancel-btn">Cancelar</button>
+        <button type="button" class="btn-modal btn-modal-secondary" id="modal-save-and-add-btn" style="display: none;">Guardar y Agregar Otro</button>
+        <button type="submit" class="btn-modal btn-modal-save">Guardar Cambios</button>
+      </footer>
+    </form>
+
+  </div>
+</div>

@@ -92,34 +92,40 @@ async function renderTopSection() {
   const container = document.getElementById(CONTAINERS.top);
   if (!container) return;
 
-  const [template, items] = await Promise.all([
-    fetchTemplate(TEMPLATE_PATHS.top),
-    HomeSectionTopService.fetchAll()
-  ]);
+  try {
+    const [template, items] = await Promise.all([
+      fetchTemplate(TEMPLATE_PATHS.top),
+      HomeSectionTopService.fetchAll()
+    ]);
 
-  const activeItems = items.filter(item => item.activo);
-  let htmlResult = '';
+    const activeItems = items.filter(item => item.activo);
+    let htmlResult = '';
 
-  activeItems.forEach((item, index) => {
-    const visualMeta = getTopItemVisualMeta(index);
-    const discountHtml = item.descuento > 0 
-      ? `<div class="discount-badge">-${item.descuento}%</div>` 
-      : '';
+    activeItems.forEach((item, index) => {
+      const visualMeta = getTopItemVisualMeta(index);
+      const discountHtml = item.descuento > 0 
+        ? `<div class="discount-badge">-${item.descuento}%</div>` 
+        : '';
 
-    let itemHtml = template
-      .replaceAll('{{urlImagen}}', item.urlImagen)
-      .replaceAll('{{nombre}}', item.nombre)
-      .replaceAll('{{color}}', item.color)
-      .replaceAll('{{precio}}', item.precio.toFixed(2))
-      .replaceAll('{{alignClass}}', visualMeta.alignClass)
-      .replaceAll('{{textAlignClass}}', visualMeta.textAlignClass)
-      .replaceAll('{{pointerArrow}}', visualMeta.pointerArrow)
-      .replaceAll('{{discountBadge}}', discountHtml);
+      const colorVal = item.color ? item.color.toUpperCase() : 'ÚNICO';
 
-    htmlResult += itemHtml;
-  });
+      let itemHtml = template
+        .replaceAll('{{urlImagen}}', item.urlImagen)
+        .replaceAll('{{nombre}}', item.nombre)
+        .replaceAll('{{color}}', colorVal)
+        .replaceAll('{{precio}}', item.precio.toFixed(2))
+        .replaceAll('{{alignClass}}', visualMeta.alignClass)
+        .replaceAll('{{textAlignClass}}', visualMeta.textAlignClass)
+        .replaceAll('{{pointerArrow}}', visualMeta.pointerArrow)
+        .replaceAll('{{discountBadge}}', discountHtml);
 
-  container.innerHTML = htmlResult;
+      htmlResult += itemHtml;
+    });
+
+    container.innerHTML = htmlResult;
+  } catch (err) {
+    console.error('Error al renderizar productos destacados:', err);
+  }
 }
 
 /**

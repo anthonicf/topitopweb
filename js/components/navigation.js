@@ -1,10 +1,13 @@
+import CollectionRepository from '../../src/repositories/CollectionRepository.js';
+import CategoryRepository from '../../src/repositories/CategoryRepository.js';
+import { categoryObserver } from '../../src/utils/CategoryChangeObserver.js';
+
 /**
  * Navigation Component
- * Handles mobile hamburger menu toggle, mobile accordion dropdowns,
- * and navigation interaction.
+ * Handles dynamic navbar rendering from repositories, mobile hamburger menu toggle, 
+ * mobile accordion dropdowns, and category change observations.
  */
 
-// Constantes globales del módulo para evitar selectores repetidos
 const SELECTORS = {
   hamburgerButtonId: 'hamburger-btn',
   hamburgerIconId: 'hamburger-icon',
@@ -24,31 +27,81 @@ const CLASSES = {
 const MOBILE_BREAKPOINT_PX = 768;
 
 /**
- * Remueve la clase activa de todos los contenedores de acordeón móviles.
- * @param {NodeList} navContainers 
+ * Genera la URL de la página de categoría de forma dinámica y robusta.
+ * Resuelve de manera root-relative (independiente de la profundidad del directorio)
+ * detectando si el proyecto corre bajo un subdirectorio como /AGTopitop/ o en la raíz.
  */
+function getCategoryPageUrl(collectionId, categorySlug) {
+  const pathname = window.location.pathname;
+  const pagesIdx = pathname.toLowerCase().indexOf('/pages');
+  let base = '';
+
+  if (pagesIdx !== -1) {
+    base = pathname.substring(0, pagesIdx);
+  } else {
+    const lastSlash = pathname.lastIndexOf('/');
+    base = pathname.substring(0, lastSlash);
+  }
+
+  // Elimina la barra diagonal final para evitar doble barra en la ruta resultante
+  if (base === '/') {
+    base = '';
+  }
+
+  return `${base}/Pages/category.html?collection=${collectionId}&category=${categorySlug}`;
+}
+
+/**
+ * Renderiza dinámicamente las categorías del navbar obtenidas de los repositorios
+ */
+async function renderNavbar() {
+  const container = document.getElementById(SELECTORS.navigationContainerId);
+  if (!container) return;
+
+  try {
+    const collections = await CollectionRepository.findAll();
+    const activeCollections = collections.filter(c => c.activo);
+    
+    let html = '';
+
+    for (const col of activeCollections) {
+      const categories = await CategoryRepository.findByCollection(col.id);
+      const activeCategories = categories.filter(cat => cat.activo);
+
+      // Limpiar el nombre de la colección para mostrar (ej: HombreTop -> Hombre)
+      const displayName = col.nombre.replace('Top', '');
+
+      html += `
+        <div class="nav-item-container">
+          <a href="#" class="nav-item"><span>${displayName}<strong>Top</strong></span> <i class="fa-solid fa-chevron-down nav-icon"></i></a>
+          <div class="dropdown-menu">
+            <div class="dropdown-header">Colección ${col.nombre}</div>
+            <ul class="dropdown-list">
+              ${activeCategories.map(cat => `
+                <li><a href="${getCategoryPageUrl(col.id, cat.slug)}">${cat.nombre}</a></li>
+              `).join('')}
+            </ul>
+          </div>
+        </div>
+      `;
+    }
+
+    container.innerHTML = html;
+  } catch (err) {
+    console.error('Error al renderizar el navbar dinámico:', err);
+  }
+}
+
 function resetMobileDropdowns(navContainers) {
   navContainers.forEach(container => {
     container.classList.remove(CLASSES.accordionActive);
   });
 }
 
-/**
- * Cambia el estado visual del ícono de menú hamburguesa.
- * @param {HTMLElement} hamburgerIcon 
- * @param {boolean} isMenuOpen 
- */
 function updateHamburgerIcon(hamburgerIcon, isMenuOpen) {
   hamburgerIcon.className = isMenuOpen ? CLASSES.iconClose : CLASSES.iconBars;
 }
 
-/**
- * Configura la acción al hacer clic en el botón de menú hamburguesa.
- * @param {HTMLElement} hamburgerButton 
- * @param {HTMLElement} hamburgerIcon 
- * @param {HTMLElement} navigationContainer 
- * @param {NodeList} navContainers 
- */
 function setupHamburgerClick(hamburgerButton, hamburgerIcon, navigationContainer, navContainers) {
   hamburgerButton.addEventListener('click', () => {
     const isMenuOpen = navigationContainer.classList.toggle(CLASSES.menuOpen);
@@ -60,24 +113,19 @@ function setupHamburgerClick(hamburgerButton, hamburgerIcon, navigationContainer
   });
 }
 
-/**
- * Inicializa la lógica de acordeón para un ítem de navegación individual en móvil.
- * @param {HTMLElement} container 
- * @param {NodeList} navContainers 
- */
 function setupAccordionItem(container, navContainers) {
   const triggerButton = container.querySelector(SELECTORS.navItemClass);
   if (!triggerButton) return;
 
-  triggerButton.addEventListener('click', (event) => {
+  // Remover event listener previo si existiera (limpieza)
+  const newTrigger = triggerButton.cloneNode(true);
+  triggerButton.parentNode.replaceChild(newTrigger, triggerButton);
+
+  newTrigger.addEventListener('click', (event) => {
     const isMobileView = window.innerWidth <= MOBILE_BREAKPOINT_PX;
     if (isMobileView) {
-      // Evitamos el comportamiento de redirección por defecto del enlace 
-      // para permitir que el acordeón se despliegue en móvil.
       event.preventDefault();
-
       const isAlreadyActive = container.classList.contains(CLASSES.accordionActive);
-
       resetMobileDropdowns(navContainers);
 
       if (!isAlreadyActive) {
@@ -87,12 +135,6 @@ function setupAccordionItem(container, navContainers) {
   });
 }
 
-/**
- * Configura el cierre automático del menú al presionar un enlace de categoría.
- * @param {HTMLElement} navigationContainer 
- * @param {HTMLElement} hamburgerIcon 
- * @param {NodeList} navContainers 
- */
 function setupSubItemLinks(navigationContainer, hamburgerIcon, navContainers) {
   const dropdownLinks = navigationContainer.querySelectorAll(SELECTORS.dropdownLinkClass);
   
@@ -106,10 +148,12 @@ function setupSubItemLinks(navigationContainer, hamburgerIcon, navContainers) {
 }
 
 /**
- * Inicializa toda la funcionalidad de navegación móvil.
- * Cumple con SRP al delegar tareas específicas a funciones auxiliares de menos de 20 líneas.
+ * Inicializa toda la funcionalidad de navegación del navbar.
  */
-export function initMobileNavigation() {
+export async function initMobileNavigation() {
+  // 1. Renderizado dinámico asíncrono
+  await renderNavbar();
+
   const hamburgerButton = document.getElementById(SELECTORS.hamburgerButtonId);
   const hamburgerIcon = document.getElementById(SELECTORS.hamburgerIconId);
   const navigationContainer = document.getElementById(SELECTORS.navigationContainerId);
@@ -119,6 +163,7 @@ export function initMobileNavigation() {
 
   const navContainers = navigationContainer.querySelectorAll(SELECTORS.navContainerClass);
 
+  // 2. Setup listeners
   setupHamburgerClick(hamburgerButton, hamburgerIcon, navigationContainer, navContainers);
   
   navContainers.forEach(container => {
@@ -126,4 +171,14 @@ export function initMobileNavigation() {
   });
 
   setupSubItemLinks(navigationContainer, hamburgerIcon, navContainers);
+
+  // 3. Suscribirse al Observer para actualizar en tiempo real
+  categoryObserver.subscribe('category_change', async () => {
+    await renderNavbar();
+    const updatedContainers = navigationContainer.querySelectorAll(SELECTORS.navContainerClass);
+    updatedContainers.forEach(container => {
+      setupAccordionItem(container, updatedContainers);
+    });
+    setupSubItemLinks(navigationContainer, hamburgerIcon, updatedContainers);
+  });
 }

@@ -63,6 +63,8 @@ export function isValidUrl(urlString) {
 export function isValidImageUrl(imageUrlString) {
   if (!isNonEmptyString(imageUrlString)) return false;
   
+  if (imageUrlString.startsWith('data:image/')) return true;
+  
   // Limpiamos parámetros de consulta para la validación de la extensión
   const urlWithoutParams = imageUrlString.split('?')[0];
   const imageRegex = /\.(jpeg|jpg|gif|png|webp|svg|bmp)$/i;

@@ -1,0 +1,65 @@
+<div>
+  <!-- Breadcrumb -->
+  <div style="padding: 12px 20px; background-color: rgba(255, 255, 255, 0.01); border-bottom: 1px solid var(--border-color); font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px;">
+    <span>Admin</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.65rem;"></i>
+    <span id="breadcrumb-collection" style="text-transform: capitalize;">Colección</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.65rem;"></i>
+    <span id="breadcrumb-category" style="font-weight: 500; color: var(--text-main);">Categoría</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.65rem;"></i>
+    <span style="font-weight: 600; color: var(--primary-color);">Productos</span>
+  </div>
+
+  <!-- Filters and Add Actions -->
+  <div style="padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; border-bottom: 1px solid var(--border-color);">
+    <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+      <!-- Filter status -->
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <label for="filter-status" style="font-size: 0.8rem; color: var(--text-muted);">Estado:</label>
+        <select id="filter-status" style="background-color: var(--bg-dark); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 6px; padding: 6px 10px; font-size: 0.8rem; outline: none;">
+          <option value="todos">Todos</option>
+          <option value="activos">Activos</option>
+          <option value="inactivos">Inactivos</option>
+        </select>
+      </div>
+
+      <!-- Filter price max -->
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <label for="filter-price-max" style="font-size: 0.8rem; color: var(--text-muted);">Precio Máx:</label>
+        <input type="number" id="filter-price-max" placeholder="Ej: 100" style="background-color: var(--bg-dark); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 6px; padding: 6px 10px; font-size: 0.8rem; width: 80px; outline: none;">
+      </div>
+    </div>
+
+    <button id="add-product-btn" class="btn-primary-action" style="padding: 8px 14px; font-size: 0.85rem;">
+      <i class="fa-solid fa-plus"></i> Agregar Producto
+    </button>
+  </div>
+
+  <!-- Products table -->
+  <div class="admin-table-wrapper">
+    <table class="admin-table">
+      <colgroup>
+        <col style="width: 100px;">
+        <col>
+        <col style="width: 100px;">
+        <col style="width: 100px;">
+        <col style="width: 150px;">
+        <col style="width: 150px;">
+        <col style="width: 100px;">
+        <col style="width: 150px;">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Miniatura</th>
+          <th>Nombre</th>
+          <th>Precio (S/)</th>
+          <th>Descuento</th>
+          <th>Colores</th>
+          <th>Tallas</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="products-table-body">
+        <!-- Loaded dynamically -->
+      </tbody>
+    </table>
+  </div>
+</div>

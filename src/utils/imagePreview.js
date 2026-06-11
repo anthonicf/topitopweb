@@ -19,7 +19,11 @@ export function bindImagePreview(urlInputElement, previewImageElement) {
     const imageUrl = urlInputElement.value.trim();
     
     if (isValidImageUrl(imageUrl)) {
-      previewImageElement.src = imageUrl;
+      if (imageUrl.startsWith('data:image/') || imageUrl.includes('://') || imageUrl.startsWith('//')) {
+        previewImageElement.src = imageUrl;
+      } else {
+        previewImageElement.src = `../../../${imageUrl}`;
+      }
     } else {
       previewImageElement.src = FALLBACK_PLACEHOLDER;
     }
