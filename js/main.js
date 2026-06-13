@@ -7,9 +7,11 @@
 import { initMobileNavigation } from './components/navigation.js';
 import { initCarousels } from './components/carousel.js';
 import { initAuthModal } from './components/authModal.js';
+import { initFavorites } from './components/favorites.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   initMobileNavigation();
   initCarousels();
   initAuthModal();
+  initFavorites();
 });

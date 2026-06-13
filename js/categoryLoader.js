@@ -2,6 +2,7 @@ import CollectionRepository from '../src/repositories/CollectionRepository.js';
 import CategoryRepository from '../src/repositories/CategoryRepository.js';
 import ProductRepository from '../src/repositories/ProductRepository.js';
 import { categoryObserver } from '../src/utils/CategoryChangeObserver.js';
+import { updateFavoriteStates } from './components/favorites.js';
 
 /**
  * public VIEW layer controller - Coordinates loading and rendering of category.html catalog.
@@ -274,6 +275,7 @@ async function renderFilteredProducts() {
     });
 
     grid.innerHTML = html;
+    updateFavoriteStates();
   } catch (err) {
     grid.innerHTML = `<div style="grid-column: 1/-1; color: #ef4444; padding: 20px; text-align: center;">Error al cargar catálogo: ${err.message}</div>`;
   }

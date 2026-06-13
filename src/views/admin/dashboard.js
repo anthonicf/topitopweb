@@ -1299,15 +1299,15 @@ function setupProductModalElements(collectionId, categoryId, productId) {
 
   // Estilizar checkboxes en forma de chips interactivos
   const setupChipsEvent = (containerId) => {
-    document.getElementById(containerId).querySelectorAll('.chip-label').forEach(label => {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    
+    container.querySelectorAll('.chip-label').forEach(label => {
       const checkbox = label.querySelector('input');
+      if (!checkbox) return;
       
-      // Evento de click para sincronizar UI con estado del checkbox
-      label.addEventListener('click', (e) => {
-        // Prevenir doble disparo
-        if (e.target !== checkbox) {
-          checkbox.checked = !checkbox.checked;
-        }
+      // Sincronizar UI al cambiar estado del checkbox
+      checkbox.addEventListener('change', () => {
         label.classList.toggle('active', checkbox.checked);
       });
       

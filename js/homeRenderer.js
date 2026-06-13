@@ -1,6 +1,7 @@
 import HomeSectionTopService from '../src/services/HomeSectionTopService.js';
 import HomeSectionSearchService from '../src/services/HomeSectionSearchService.js';
 import HomeSectionKidsService from '../src/services/HomeSectionKidsService.js';
+import { updateFavoriteStates } from './components/favorites.js';
 
 // VIEW layer - Public homepage renderer (coordinates static template population)
 const CONTAINERS = {
@@ -123,6 +124,7 @@ async function renderTopSection() {
     });
 
     container.innerHTML = htmlResult;
+    updateFavoriteStates();
   } catch (err) {
     console.error('Error al renderizar productos destacados:', err);
   }
