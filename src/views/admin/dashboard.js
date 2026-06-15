@@ -229,9 +229,12 @@ async function setupSidebarNavigation() {
   // Renderizar categorías del sidebar dinámicamente
   await renderSidebarCategories();
   
-  // Suscribirse a cambios en categorías para refrescar el sidebar
+  // Suscribirse a cambios en categorías para refrescar el sidebar y la tabla si está activa
   categoryObserver.subscribe('category_change', async () => {
     await renderSidebarCategories();
+    if (activeSection === 'categories' && currentCollectionId) {
+      await renderCategoriesTable(currentCollectionId);
+    }
   });
 }
 
@@ -251,10 +254,13 @@ async function renderSidebarCategories() {
     categories.forEach(cat => {
       if (!cat.activo) return;
       html += `
-        <li class="submenu-item" data-category-id="${cat.id}">
-          <button onclick="window.location.hash='#/admin/colecciones/${colId}/categorias/${cat.id}/productos'">
+        <li class="submenu-item" data-category-id="${cat.id}" style="display: flex; align-items: center; justify-content: space-between; position: relative; width: 100%;">
+          <button onclick="window.location.hash='#/admin/colecciones/${colId}/categorias/${cat.id}/productos'" style="flex-grow: 1; padding-right: 32px; border-top-right-radius: 0; border-bottom-right-radius: 0; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
             <i class="fa-solid fa-angle-right"></i> ${cat.nombre}
           </button>
+          <span class="btn-delete-sidebar-cat" data-category-id="${cat.id}" data-collection-id="${colId}" data-category-name="${cat.nombre}" title="Eliminar categoría" role="button" style="position: absolute; right: 6px; width: 26px; height: 26px; display: none; align-items: center; justify-content: center; border-radius: 4px; color: var(--text-muted); cursor: pointer; transition: all 0.2s ease; z-index: 10;">
+            <i class="fa-solid fa-trash-can" style="font-size: 0.75rem;"></i>
+          </span>
         </li>
       `;
     });
@@ -269,6 +275,17 @@ async function renderSidebarCategories() {
     `;
 
     submenu.innerHTML = html;
+
+    // Agregar evento al botón de eliminación de cada categoría en el sidebar
+    submenu.querySelectorAll('.btn-delete-sidebar-cat').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const catId = btn.dataset.categoryId;
+        const colId = btn.dataset.collectionId;
+        const catName = btn.dataset.categoryName;
+        await deleteCategoryHandler(catId, colId, catName);
+      });
+    });
 
     // Agregar evento al botón "+ Nueva categoría"
     document.getElementById(`btn-sidebar-add-cat-${colId}`).addEventListener('click', (e) => {
@@ -702,6 +719,70 @@ async function handleFormSubmit(event, closeCallback) {
   }
 }
 
+/**
+ * Manejador centralizado para la eliminación de categorías.
+ * Realiza las comprobaciones de dependencias y maneja el flujo de confirmación.
+ */
+async function deleteCategoryHandler(categoryId, collectionId, categoryName) {
+  if (!confirm(`¿Está seguro de que desea eliminar la categoría "${categoryName}"?`)) {
+    return;
+  }
+
+  try {
+    await CategoryRepository.delete(categoryId);
+    showToast('Categoría eliminada con éxito.');
+    
+    // Si la categoría eliminada es la activa o la que se está visualizando, redirigir
+    if (currentCategoryId === categoryId || window.location.hash.includes(`/categorias/${categoryId}/productos`)) {
+      currentCategoryId = null;
+      window.location.hash = `#/admin/colecciones/${collectionId}/categorias`;
+    }
+    
+    categoryObserver.notify('category_change', null);
+  } catch (err) {
+    if (err.message.startsWith('HAS_PRODUCTS:')) {
+      const count = err.message.split(':')[1];
+      
+      if (confirm(`Esta categoría tiene ${count} productos asociados.\n¿Desea desactivar la categoría en su lugar (Ocultarla) para no perder los productos?\n\nPresione [Aceptar] para Desactivar o [Cancelar] si desea eliminar todo permanentemente.`)) {
+        // Desactivar en su lugar
+        await CategoryRepository.update(categoryId, { activo: false });
+        showToast('Categoría ocultada con éxito.');
+        categoryObserver.notify('category_change', null);
+      } else {
+        // Eliminar permanentemente
+        if (confirm('ATENCIÓN: Se eliminará la categoría y TODOS sus productos asociados de manera irreversible. ¿Está seguro?')) {
+          try {
+            // Borrar productos
+            const products = await ProductRepository.findByCategory(categoryId);
+            for (const p of products) {
+              await ProductRepository.delete(p.id);
+            }
+            // Borrar categoría forzadamente
+            const list = CategoryRepository._loadAll();
+            const idx = list.findIndex(c => c.id === categoryId);
+            if (idx !== -1) {
+              list.splice(idx, 1);
+              CategoryRepository._saveAll(list);
+            }
+            showToast('Categoría y productos eliminados permanentemente.');
+            
+            if (currentCategoryId === categoryId || window.location.hash.includes(`/categorias/${categoryId}/productos`)) {
+              currentCategoryId = null;
+              window.location.hash = `#/admin/colecciones/${collectionId}/categorias`;
+            }
+            
+            categoryObserver.notify('category_change', null);
+          } catch (deleteErr) {
+            showToast(`Error al eliminar productos: ${deleteErr.message}`, true);
+          }
+        }
+      }
+    } else {
+      showToast(err.message, true);
+    }
+  }
+}
+
 
 /* ==========================================================================
    === NUEVA LOGICA DE GESTION DE CATEGORIAS Y PRODUCTOS DINAMICOS ===
@@ -788,45 +869,7 @@ async function renderCategoriesTable(collectionId) {
     });
 
     row.querySelector('.btn-delete').addEventListener('click', async () => {
-      try {
-        await CategoryRepository.delete(cat.id);
-        showToast('Categoría eliminada con éxito.');
-        categoryObserver.notify('category_change', null);
-        await loadCategoriesSection(collectionId);
-      } catch (err) {
-        if (err.message.startsWith('HAS_PRODUCTS:')) {
-          const count = err.message.split(':')[1];
-          
-          if (confirm(`Esta categoría tiene ${count} productos asociados.\n¿Desea desactivar la categoría en su lugar (Ocultarla) para no perder los productos?\n\nPresione [Aceptar] para Desactivar o [Cancelar] si desea eliminar todo permanentemente.`)) {
-            // Desactivar en su lugar
-            await CategoryRepository.update(cat.id, { activo: false });
-            showToast('Categoría ocultada con éxito.');
-            categoryObserver.notify('category_change', null);
-            await loadCategoriesSection(collectionId);
-          } else {
-            // Eliminar permanentemente
-            if (confirm('ATENCIÓN: Se eliminará la categoría y TODOS sus productos asociados de manera irreversible. ¿Está seguro?')) {
-              // Borrar productos
-              const products = await ProductRepository.findByCategory(cat.id);
-              for (const p of products) {
-                await ProductRepository.delete(p.id);
-              }
-              // Borrar categoría forzadamente (temporalmente limpiamos para evitar validaciones de subproductos)
-              const list = CategoryRepository._loadAll();
-              const idx = list.findIndex(c => c.id === cat.id);
-              if (idx !== -1) {
-                list.splice(idx, 1);
-                CategoryRepository._saveAll(list);
-              }
-              showToast('Categoría y productos eliminados permanentemente.');
-              categoryObserver.notify('category_change', null);
-              await loadCategoriesSection(collectionId);
-            }
-          }
-        } else {
-          showToast(err.message, true);
-        }
-      }
+      await deleteCategoryHandler(cat.id, collectionId, cat.nombre);
     });
 
     tbody.appendChild(row);
