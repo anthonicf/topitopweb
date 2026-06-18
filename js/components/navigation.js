@@ -34,10 +34,13 @@ const MOBILE_BREAKPOINT_PX = 768;
 function getCategoryPageUrl(collectionId, categorySlug) {
   const pathname = window.location.pathname;
   const pagesIdx = pathname.toLowerCase().indexOf('/pages');
+  const detailIdx = pathname.toLowerCase().indexOf('/producto-detalle');
   let base = '';
 
   if (pagesIdx !== -1) {
     base = pathname.substring(0, pagesIdx);
+  } else if (detailIdx !== -1) {
+    base = pathname.substring(0, detailIdx);
   } else {
     const lastSlash = pathname.lastIndexOf('/');
     base = pathname.substring(0, lastSlash);

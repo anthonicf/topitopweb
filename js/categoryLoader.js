@@ -114,6 +114,20 @@ async function initCategoryCatalog() {
     });
 
     await renderFilteredProducts();
+
+    const grid = document.getElementById('products-grid-catalog');
+    if (grid) {
+      grid.addEventListener('click', (e) => {
+        const card = e.target.closest('.product-card-custom');
+        const isFavBtn = e.target.closest('.fav-btn');
+        if (card && !isFavBtn) {
+          const productId = card.dataset.productId;
+          if (productId) {
+            window.location.href = `../producto-detalle/producto-detalle.html?id=${productId}`;
+          }
+        }
+      });
+    }
   } catch (err) {
     console.error('Error al iniciar el catálogo:', err);
   }
@@ -257,7 +271,7 @@ async function renderFilteredProducts() {
       }
 
       html += `
-        <div class="product-card-custom">
+        <div class="product-card-custom" data-product-id="${prod.id}">
           <div class="card-img-wrap">
             <img src="${imageSrc}" alt="${prod.nombre}" loading="lazy">
             ${discountBadgeHtml}

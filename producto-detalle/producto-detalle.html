@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Producto | Topitop</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Common and Detail CSS -->
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="css/producto-detalle.css">
+</head>
+<body>
+
+    <!-- Promotion Bar -->
+    <div class="promo-bar">
+        *50% DE DESCUENTO EN PRENDAS SELECCIONADAS*
+    </div>
+
+    <!-- Header -->
+    <header class="main-header">
+        <nav class="nav-links" id="nav-links">
+            <!-- Loaded dynamically via navigation.js -->
+        </nav>
+
+        <div class="logo">
+            <a href="../index.html">Topitop</a>
+        </div>
+
+        <div class="header-actions">
+            <a href="#"><i class="fa-regular fa-user"></i></a>
+            <a href="#"><i class="fa-solid fa-bag-shopping"></i></a>
+            <a href="#"><i class="fa-regular fa-heart"></i></a>
+            <div class="search-box">
+                <input type="text" placeholder="¿Qué estás buscando?">
+                <button><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+        </div>
+
+        <!-- Botón hamburguesa (solo visible en móvil) -->
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Abrir menú">
+            <i class="fa-solid fa-bars" id="hamburger-icon"></i>
+        </button>
+    </header>
+
+    <!-- Breadcrumbs -->
+    <div class="breadcrumb-container">
+        <a href="../index.html">Inicio</a> / 
+        <span class="current">Detalle de Producto</span>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="detail-main-wrapper">
+        <!-- Error State (initially hidden) -->
+        <div id="errorStateContainer" class="detail-error-container" style="display: none;">
+            <i class="fa-solid fa-circle-exclamation error-icon"></i>
+            <h2 id="errorStateMessage" class="error-heading">Producto no encontrado</h2>
+            <p class="error-subtext">El enlace al que intentas acceder podría estar roto o el producto ha sido retirado.</p>
+            <a href="../index.html" class="btn-primary" style="display: inline-block; margin-top: 1rem;">Volver al inicio</a>
+        </div>
+
+        <!-- Detail Layout Grid (initially hidden, shown by JS on successful load) -->
+        <div id="productDetailsContainer" class="product-detail-container" style="display: none;">
+            
+            <!-- Left Column: Image Gallery -->
+            <div class="product-gallery">
+                <div class="main-image-wrap">
+                    <img id="mainProductImage" class="main-product-image" src="" alt="Imagen principal del producto">
+                </div>
+                <div id="thumbnailsContainer" class="thumbnails-container">
+                    <!-- Thumbnails loaded dynamically -->
+                </div>
+            </div>
+
+            <!-- Right Column: Info Panel -->
+            <div class="product-info-panel">
+                <div class="panel-header">
+                    <span id="productCollection" class="product-collection-label">Colección</span>
+                    <button id="favHeartBtn" class="detail-fav-heart" aria-label="Agregar a favoritos">
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+                </div>
+                
+                <h1 id="productName" class="product-name-title">Nombre del Producto</h1>
+                <span id="productCode" class="product-code-label">Código: ---</span>
+
+                <div class="product-price-row">
+                    <span id="priceActual" class="price-current">S/ 0.00</span>
+                    <span id="priceOriginal" class="price-old">S/ 0.00</span>
+                    <span id="discountBadge" class="discount-badge">-0%</span>
+                </div>
+
+                <hr class="panel-divider">
+
+                <!-- Sizes selection -->
+                <div class="size-selection-row">
+                    <div class="size-labels">
+                        <span class="size-title">Talla</span>
+                        <span id="sizeErrorMessage" class="size-error-msg">Selecciona una opción</span>
+                    </div>
+                    <div id="sizeContainer" class="size-options-grid">
+                        <!-- Loaded dynamically -->
+                    </div>
+                    <a href="#" id="sizeGuideLink" class="size-guide-link">Conoce tu talla aquí</a>
+                </div>
+
+                <!-- Quantity and Cart Action -->
+                <div class="purchase-actions-row">
+                    <div class="quantity-selector-wrap">
+                        <button id="quantityDecreaseBtn" class="quantity-btn decrease" aria-label="Disminuir cantidad">-</button>
+                        <input id="quantityInput" class="quantity-input" type="text" value="1" readonly>
+                        <button id="quantityIncreaseBtn" class="quantity-btn increase" aria-label="Aumentar cantidad">+</button>
+                    </div>
+                    <button id="addToCartBtn" class="btn-add-to-cart" disabled>AGREGAR AL CARRITO</button>
+                </div>
+
+                <hr class="panel-divider">
+
+                <!-- Collapsible Sections (Accordions) -->
+                <div class="accordions-wrap">
+                    <!-- Item 1: Descripción -->
+                    <div class="accordion-item">
+                        <button class="accordion-header" aria-label="Ver descripción y características">
+                            <span>Descripción y características</span>
+                            <span class="accordion-icon"><i class="fa-solid fa-chevron-down"></i></span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-inner">
+                                <p id="descContentText">Cargando descripción...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 2: Modelo -->
+                    <div class="accordion-item">
+                        <button class="accordion-header" aria-label="Ver información del modelo">
+                            <span>Información del modelo</span>
+                            <span class="accordion-icon"><i class="fa-solid fa-chevron-down"></i></span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-inner">
+                                <p id="modelContentText">Cargando detalles...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sharing Row -->
+                <div class="share-row">
+                    <span class="share-title">Compartir:</span>
+                    <div class="share-icons">
+                        <a href="#" id="shareFacebook" class="share-btn facebook" aria-label="Compartir en Facebook">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="#" id="shareWhatsapp" class="share-btn whatsapp" aria-label="Compartir por WhatsApp">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <a href="#" id="shareCopyLink" class="share-btn copy-link" aria-label="Copiar enlace">
+                            <i class="fa-solid fa-link"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-logo">
+            <a href="../index.html">Topitop</a>
+        </div>
+
+        <div class="footer-columns">
+            <div class="footer-col">
+                <h4 class="footer-heading">Topitop</h4>
+                <a href="#">Nosotros</a>
+                <a href="#">Corporación Topitop</a>
+                <a href="#">Certificación OEA</a>
+                <a href="#">Tiendas</a>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-heading">Atención al cliente</h4>
+                <a href="#">Preguntas frecuentes</a>
+                <a href="#">Términos y condiciones</a>
+                <a href="#">Cambios y devoluciones</a>
+                <a href="#">Bases legales</a>
+                <a href="#"><i class="fa-solid fa-book-open"></i> Libro de reclamaciones</a>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-heading">Contáctanos</h4>
+                <p>Horario de atención:<br>Lun-Vie 9:00 am a 6:00 pm</p>
+                <div class="social-media">
+                    <p>Social media</p>
+                    <div class="social-icons">
+                        <a href="https://www.youtube.com/user/TopiTopPeru"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="https://www.instagram.com/topitop_pe/"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://www.linkedin.com/company/topitop/"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="https://www.facebook.com/Topitop.peru/?ref=br_rs"><i class="fa-brands fa-facebook"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-heading">Información</h4>
+                <p>Razón Social: TRADING<br>FASHION LINE S.A.</p>
+                <p>RUC: 20501057682</p>
+                <p>Dirección Legal: Av. Santuario<br>Nro. 1323</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <span>Topitop © 2026</span>
+            <span>Términos & Condiciones y Políticas de Privacidad</span>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/51941074074" class="whatsapp-float" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Application script entry point -->
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

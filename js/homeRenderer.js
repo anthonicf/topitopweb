@@ -111,6 +111,7 @@ async function renderTopSection() {
       const colorVal = item.color ? item.color.toUpperCase() : 'ÚNICO';
 
       let itemHtml = template
+        .replaceAll('{{id}}', item.id)
         .replaceAll('{{urlImagen}}', item.urlImagen)
         .replaceAll('{{nombre}}', item.nombre)
         .replaceAll('{{color}}', colorVal)
@@ -125,6 +126,20 @@ async function renderTopSection() {
 
     container.innerHTML = htmlResult;
     updateFavoriteStates();
+
+    if (!container.dataset.hasDetailListener) {
+      container.addEventListener('click', (e) => {
+        const card = e.target.closest('.product-item');
+        const isFavBtn = e.target.closest('.fav-btn');
+        if (card && !isFavBtn) {
+          const productId = card.dataset.productId;
+          if (productId) {
+            window.location.href = `producto-detalle/producto-detalle.html?id=${productId}`;
+          }
+        }
+      });
+      container.dataset.hasDetailListener = 'true';
+    }
   } catch (err) {
     console.error('Error al renderizar productos destacados:', err);
   }

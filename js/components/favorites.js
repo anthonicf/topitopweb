@@ -36,7 +36,7 @@ function getRootPrefix() {
     lowerPath.includes('/pages/kidstop/')
   ) {
     return '../../';
-  } else if (lowerPath.includes('/pages/')) {
+  } else if (lowerPath.includes('/pages/') || lowerPath.includes('/producto-detalle/')) {
     return '../';
   }
   return '';
