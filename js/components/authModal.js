@@ -33,9 +33,12 @@ const AUTH_MODAL_HTML = `
 <div class="auth-modal" id="${SELECTORS.authModalId}">
   <div class="auth-modal-overlay" id="${SELECTORS.authModalOverlayId}"></div>
   <div class="auth-modal-container">
-    <button class="auth-modal-close" id="${SELECTORS.authModalCloseId}" aria-label="Cerrar modal">
-      <i class="fa-solid fa-xmark"></i>
-    </button>
+    <div class="auth-modal-header">
+      <span class="auth-modal-logo">Topitop</span>
+      <button class="auth-modal-close" id="${SELECTORS.authModalCloseId}" aria-label="Cerrar modal">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
     <div class="auth-modal-content">
       <div class="auth-tabs">
         <button class="auth-tab active" data-tab="login">Iniciar Sesión</button>

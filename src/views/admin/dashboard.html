@@ -460,12 +460,122 @@
       background-color: var(--border-color);
       margin: 10px 16px;
     }
+
+    /* ---- Botón hamburguesa admin ---- */
+    .admin-hamburger {
+      display: none;
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 200;
+      background: var(--bg-sidebar);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    /* Overlay para cerrar sidebar en móvil */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 98;
+    }
+
+    .sidebar-overlay.visible {
+      display: block;
+    }
+
+    /* ---- RESPONSIVO TABLET (1024px) ---- */
+    @media (max-width: 1024px) {
+      .sidebar {
+        width: 220px;
+      }
+      .main-content {
+        margin-left: 220px;
+        padding: 30px 24px;
+      }
+    }
+
+    /* ---- RESPONSIVO MÓVIL (768px) ---- */
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+
+      .admin-hamburger {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .sidebar {
+        width: 260px;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 99;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding: 64px 16px 24px;
+        width: 100%;
+      }
+
+      .content-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .content-header h1 {
+        font-size: 1.4rem;
+      }
+
+      .admin-table-wrapper {
+        overflow-x: auto;
+      }
+
+      table.admin-table {
+        min-width: 600px;
+      }
+
+      .toast {
+        min-width: 240px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .main-content {
+        padding: 60px 12px 20px;
+      }
+      .sidebar-header h2 {
+        font-size: 1.2rem;
+      }
+    }
   </style>
 </head>
 <body>
 
+  <!-- Botón hamburguesa (solo móvil) -->
+  <button class="admin-hamburger" id="admin-hamburger" aria-label="Abrir menú">
+    <i class="fa-solid fa-bars"></i> Menú
+  </button>
+
+  <!-- Overlay -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
   <!-- Sidebar -->
-  <aside class="sidebar">
+  <aside class="sidebar" id="admin-sidebar">
     <div class="sidebar-header">
       <h2>Topi<span>top</span></h2>
       <span style="font-size: 0.75rem; background: var(--border-color); padding: 2px 6px; border-radius: 4px; color: var(--text-muted);">ADMIN</span>
@@ -552,5 +662,18 @@
   <div id="modal-container"></div>
 
   <script type="module" src="./dashboard.js"></script>
+  <script>
+    const hamburger = document.getElementById('admin-hamburger');
+    const sidebar = document.getElementById('admin-sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    hamburger.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('visible');
+    });
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('visible');
+    });
+  </script>
 </body>
 </html>

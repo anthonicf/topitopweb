@@ -8,10 +8,14 @@ import { initMobileNavigation } from './components/navigation.js';
 import { initCarousels } from './components/carousel.js';
 import { initAuthModal } from './components/authModal.js';
 import { initFavorites } from './components/favorites.js';
+import { initFooterAcordeon } from './components/footerAcordeon.js';
+import { initFaqAcordeon } from './components/faqAcordeon.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   initMobileNavigation();
   initCarousels();
   initAuthModal();
   initFavorites();
+  initFooterAcordeon();
+  initFaqAcordeon();
 });

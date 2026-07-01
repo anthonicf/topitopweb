@@ -1,0 +1,422 @@
+/* ============================================
+   CSS COMPARTIDO — PÁGINAS DE FOOTER
+   ============================================ */
+
+/* ---- BANNER HERO ---- */
+.fp-banner {
+    background: linear-gradient(rgba(40, 20, 25, 0.55), rgba(40, 20, 25, 0.55)),
+        center/cover no-repeat #3a1010;
+    min-height: 40vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+
+.fp-banner-content {
+    max-width: 700px;
+    padding: 0 20px;
+}
+
+.fp-banner-tag {
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-bottom: 0.75rem;
+}
+
+.fp-banner h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 400;
+    margin-bottom: 0.75rem;
+}
+
+.fp-divider {
+    width: 60px;
+    height: 2px;
+    background: rgba(255,255,255,0.6);
+    margin: 1rem auto;
+}
+
+/* ---- BREADCRUMB ---- */
+.fp-breadcrumb {
+    background: #f9f7f5;
+    padding: 0.75rem 4rem;
+    font-size: 0.8rem;
+    color: #888;
+    border-bottom: 1px solid #eee;
+}
+
+.fp-breadcrumb a {
+    color: #7c1416;
+    text-decoration: none;
+}
+
+.fp-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.fp-breadcrumb span {
+    margin: 0 0.4rem;
+}
+
+/* ---- SECCIÓN GENÉRICA ---- */
+.fp-section {
+    padding: 4rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.fp-section-alt {
+    background: #f9f7f5;
+}
+
+.fp-section-alt .fp-section {
+    background: #f9f7f5;
+}
+
+.fp-section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: #7c1416;
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+}
+
+.fp-section-subtitle {
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #7c1416;
+    opacity: 0.7;
+    margin-bottom: 1.5rem;
+}
+
+.fp-divider-red {
+    width: 50px;
+    height: 2px;
+    background: #7c1416;
+    margin-bottom: 2rem;
+}
+
+.fp-text {
+    font-size: 0.95rem;
+    line-height: 1.85;
+    color: #444;
+    margin-bottom: 1.25rem;
+}
+
+/* ---- DOS COLUMNAS ---- */
+.fp-two-col {
+    display: flex;
+    gap: 5rem;
+    align-items: center;
+}
+
+.fp-two-col.reverse {
+    flex-direction: row-reverse;
+}
+
+.fp-two-col > * {
+    flex: 1;
+}
+
+.fp-two-col img {
+    width: 100%;
+    display: block;
+    border-radius: 4px;
+    object-fit: cover;
+    max-height: 420px;
+}
+
+/* ---- TARJETAS ---- */
+.fp-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.fp-card {
+    background: white;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    border-radius: 6px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.fp-card-icon {
+    width: 65px;
+    height: 65px;
+    border: 1.5px solid #7c1416;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.25rem;
+    font-size: 1.6rem;
+    color: #7c1416;
+}
+
+.fp-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 400;
+    font-size: 1.15rem;
+    margin-bottom: 0.75rem;
+    color: #333;
+}
+
+.fp-card p {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: #666;
+}
+
+/* ---- FAQ ---- */
+.fp-faq-list {
+    margin-top: 1.5rem;
+}
+
+.fp-faq-item {
+    border-bottom: 1px solid #e5ded6;
+}
+
+.fp-faq-item summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 1.1rem 0;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #7c1416;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+}
+
+.fp-faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.fp-faq-item summary .faq-icon {
+    font-size: 0.75rem;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+}
+
+.fp-faq-item[open] summary .faq-icon {
+    transform: rotate(180deg);
+}
+
+.fp-faq-item p {
+    padding: 0 0 1.1rem 0;
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: #555;
+}
+
+/* ---- TABLA ---- */
+.fp-table-wrap {
+    overflow-x: auto;
+    margin-top: 1.5rem;
+}
+
+.fp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.fp-table th {
+    background: #7c1416;
+    color: white;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+.fp-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e5ded6;
+    vertical-align: top;
+}
+
+.fp-table tr:nth-child(even) td {
+    background: #f9f7f5;
+}
+
+/* ---- MAPA / TIENDAS ---- */
+.fp-store-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.fp-store-card {
+    background: white;
+    border: 1px solid #e5ded6;
+    border-radius: 6px;
+    padding: 1.5rem;
+}
+
+.fp-store-card h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #7c1416;
+    margin-bottom: 0.5rem;
+}
+
+.fp-store-card p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: #555;
+}
+
+.fp-store-icon {
+    font-size: 1.5rem;
+    color: #7c1416;
+    margin-bottom: 0.75rem;
+}
+
+/* ---- LIBRO DE RECLAMACIONES ---- */
+.fp-form {
+    background: white;
+    border: 1px solid #e5ded6;
+    border-radius: 8px;
+    padding: 2.5rem;
+    margin-top: 2rem;
+}
+
+.fp-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.fp-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.fp-form-group.full {
+    grid-column: 1 / -1;
+}
+
+.fp-form-group label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #7c1416;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.fp-form-group input,
+.fp-form-group select,
+.fp-form-group textarea {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 0.65rem 0.85rem;
+    font-size: 0.9rem;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.fp-form-group input:focus,
+.fp-form-group select:focus,
+.fp-form-group textarea:focus {
+    border-color: #7c1416;
+}
+
+.fp-form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.fp-btn-submit {
+    background: #7c1416;
+    color: white;
+    border: none;
+    padding: 0.85rem 2.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+    letter-spacing: 0.5px;
+}
+
+.fp-btn-submit:hover {
+    background: #9e1a1d;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 1024px) {
+    .fp-section {
+        padding: 3rem 2rem;
+    }
+    .fp-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .fp-store-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .fp-banner h1 {
+        font-size: 2rem;
+    }
+    .fp-breadcrumb {
+        padding: 0.75rem 1.25rem;
+    }
+    .fp-section {
+        padding: 2.5rem 1.25rem;
+    }
+    .fp-two-col,
+    .fp-two-col.reverse {
+        flex-direction: column;
+        gap: 2rem;
+    }
+    .fp-cards {
+        grid-template-columns: 1fr;
+    }
+    .fp-store-grid {
+        grid-template-columns: 1fr;
+    }
+    .fp-form-grid {
+        grid-template-columns: 1fr;
+    }
+    .fp-form-group.full {
+        grid-column: 1;
+    }
+    .fp-section-title {
+        font-size: 1.6rem;
+    }
+    /* Grids inline en páginas (LibroReclamaciones, CambiosDevoluciones) */
+    .fp-section > div[style*="grid-template-columns:1fr 1fr"],
+    .fp-section > div[style*="grid-template-columns: 1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+    }
+    .fp-section > div[style*="grid-template-columns:repeat(3"],
+    .fp-section > div[style*="grid-template-columns: repeat(3"] {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .fp-banner {
+        min-height: 30vh;
+    }
+    .fp-banner h1 {
+        font-size: 1.6rem;
+    }
+}
