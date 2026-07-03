@@ -1,0 +1,32 @@
+<div class="admin-table-wrapper">
+  <div style="padding: 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color);">
+    <h3 style="font-size: 1.1rem; font-weight: 600;">Categorías de la Colección</h3>
+    <button id="add-category-btn" class="btn-primary-action" style="padding: 8px 14px; font-size: 0.85rem;">
+      <i class="fa-solid fa-plus"></i> Nueva Categoría
+    </button>
+  </div>
+  
+  <table class="admin-table">
+    <colgroup>
+      <col style="width: 100px;">
+      <col>
+      <col style="width: 150px;">
+      <col style="width: 100px;">
+      <col style="width: 120px;">
+      <col style="width: 150px;">
+    </colgroup>
+    <thead>
+      <tr>
+        <th>Portada</th>
+        <th>Nombre</th>
+        <th>Slug URL</th>
+        <th>Orden</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="categories-table-body">
+      <!-- Loaded dynamically -->
+    </tbody>
+  </table>
+</div>

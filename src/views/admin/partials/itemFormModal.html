@@ -1,0 +1,412 @@
+<style>
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: modalFadeIn 0.2s ease;
+  }
+  .modal-wrapper {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 550px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    animation: modalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .modal-header h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  .btn-close-modal {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  .btn-close-modal:hover {
+    color: var(--text-main);
+  }
+  .modal-body {
+    padding: 24px;
+    max-height: 75vh;
+    overflow-y: auto;
+  }
+  .modal-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .modal-form-group {
+    margin-bottom: 16px;
+  }
+  .modal-form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: var(--text-main);
+  }
+  .modal-form-group input, 
+  .modal-form-group select {
+    width: 100%;
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: var(--text-main);
+    font-size: 0.9rem;
+    transition: border-color 0.2s ease;
+  }
+  .modal-form-group input:focus, 
+  .modal-form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+  }
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .checkbox-group input {
+    width: auto;
+    cursor: pointer;
+  }
+  /* Image preview section */
+  .preview-section {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px dashed var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 12px;
+  }
+  .preview-img-container {
+    width: 80px;
+    height: 80px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-dark);
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .preview-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .preview-info {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+  .modal-footer {
+    padding: 18px 24px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    background-color: rgba(255, 255, 255, 0.01);
+  }
+  .btn-modal {
+    padding: 10px 18px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .btn-modal-cancel {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+  }
+  .btn-modal-cancel:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+  }
+  .btn-modal-save {
+    background-color: var(--primary-color);
+    border: none;
+    color: var(--text-main);
+  }
+  .btn-modal-save:hover {
+    background-color: var(--primary-hover);
+  }
+
+  @keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes modalSlideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  /* Image selection tabs and dropzone */
+  .image-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+    margin-top: 6px;
+  }
+  .image-tab-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+  }
+  .image-tab-btn:hover {
+    color: var(--text-main);
+    background-color: rgba(255, 255, 255, 0.03);
+  }
+  .image-tab-btn.active {
+    color: var(--text-main);
+    background-color: var(--primary-color);
+  }
+  .image-dropzone {
+    border: 2px dashed var(--border-color);
+    border-radius: 8px;
+    padding: 24px;
+    text-align: center;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.01);
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .image-dropzone:hover, .image-dropzone.dragover {
+    border-color: var(--primary-color);
+    background-color: rgba(139, 0, 0, 0.05);
+  }
+  .image-dropzone i {
+    font-size: 1.8rem;
+    color: var(--text-muted);
+    transition: color 0.2s ease;
+  }
+  .image-dropzone:hover i, .image-dropzone.dragover i {
+    color: var(--primary-color);
+  }
+  .dropzone-text {
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+  .dropzone-text span {
+    color: var(--primary-color);
+    text-decoration: underline;
+  }
+  .dropzone-subtext {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+  .uploaded-file-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+  }
+  .uploaded-file-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 320px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-main);
+  }
+  .btn-remove-file {
+    background: none;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: color 0.2s ease;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-remove-file:hover {
+    color: #ff6b6b;
+  }
+</style>
+
+<div class="modal-overlay" id="item-modal-overlay">
+  <div class="modal-wrapper">
+    
+    <header class="modal-header">
+      <h3 id="modal-title">Agregar Item</h3>
+      <button class="btn-close-modal" id="modal-close-btn">&times;</button>
+    </header>
+
+    <form id="item-form">
+      <div class="modal-body">
+        
+        <!-- URL de imagen (Común para todas las secciones) -->
+        <div class="modal-form-group">
+          <label>Imagen del Elemento</label>
+          
+          <div class="image-tabs">
+            <button type="button" class="image-tab-btn active" id="btn-tab-upload">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Subir Archivo
+            </button>
+            <button type="button" class="image-tab-btn" id="btn-tab-url">
+              <i class="fa-solid fa-link"></i> URL o Ruta Local
+            </button>
+          </div>
+
+          <!-- Tab 1: Subir Archivo -->
+          <div id="tab-content-upload">
+            <div class="image-dropzone" id="dropzone-area">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <p class="dropzone-text">Arrastra una imagen aquí o <span>haz clic para buscar</span></p>
+              <p class="dropzone-subtext">PNG, JPG, WEBP o SVG (Compresión automática integrada)</p>
+              <input type="file" id="form-file-input" accept="image/*" style="display: none;">
+            </div>
+            
+            <div id="file-info-container" style="display: none; margin-top: 10px;">
+              <div class="uploaded-file-info">
+                <span class="uploaded-file-name">
+                  <i class="fa-solid fa-file-image" style="color: var(--primary-color);"></i>
+                  <span id="uploaded-file-display-name">archivo.png</span>
+                </span>
+                <button type="button" class="btn-remove-file" id="btn-remove-uploaded-file" title="Eliminar imagen seleccionada">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 2: URL o Ruta Local -->
+          <div id="tab-content-url" style="display: none;">
+            <input type="text" id="form-url-imagen" name="urlImagen" placeholder="Ej: images/TopModelos/modelo_1.png o URL web">
+          </div>
+
+          <div class="preview-section">
+            <div class="preview-img-container">
+              <img id="form-img-preview" src="https://placehold.co/150?text=Sin+Imagen" alt="Vista previa">
+            </div>
+            <div class="preview-info">
+              <p>Vista previa en tiempo real.</p>
+              <p>Formatos sugeridos: .png, .jpg, .webp, .svg</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Campos dinámicos para "Lo más TOP" -->
+        <div id="fields-top" style="display: none;">
+          <div class="modal-grid-2">
+            <div class="modal-form-group">
+              <label for="form-nombre">Nombre de la Prenda</label>
+              <input type="text" id="form-nombre" name="nombre" placeholder="Ej: Susana">
+            </div>
+            <div class="modal-form-group">
+              <label for="form-color">Color</label>
+              <input type="text" id="form-color" name="color" placeholder="Ej: BLANCO">
+            </div>
+          </div>
+
+          <div class="modal-grid-2">
+            <div class="modal-form-group">
+              <label for="form-precio">Precio (S/.)</label>
+              <input type="number" id="form-precio" name="precio" step="0.01" min="0" placeholder="Ej: 89.90">
+            </div>
+            <div class="modal-form-group">
+              <label for="form-descuento">Descuento (%) - Opcional</label>
+              <input type="number" id="form-descuento" name="descuento" min="0" max="100" placeholder="Ej: 20">
+            </div>
+          </div>
+
+          <div class="modal-form-group">
+            <label for="form-genero">Género</label>
+            <select id="form-genero" name="genero">
+              <option value="mujer">Mujer</option>
+              <option value="hombre">Hombre</option>
+              <option value="kids">Kids</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Campos dinámicos para "Lo más buscado" -->
+        <div id="fields-search" style="display: none;">
+          <div class="modal-form-group">
+            <label for="form-categoria">Categoría</label>
+            <select id="form-categoria" name="categoria">
+              <option value="Accesorios">Accesorios</option>
+              <option value="Calzados">Calzados</option>
+            </select>
+          </div>
+          <div class="modal-form-group">
+            <label for="form-subcategoria">Subcategoría</label>
+            <select id="form-subcategoria" name="subcategoria">
+              <option value="Mujer Top">Mujer Top</option>
+              <option value="Hombre Top">Hombre Top</option>
+              <option value="Kid Top">Kid Top</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Campos dinámicos para "Kids TOP" -->
+        <div id="fields-kids" style="display: none;">
+          <div class="modal-form-group">
+            <label for="form-orden">Orden de Visualización</label>
+            <input type="number" id="form-orden" name="orden" min="1" step="1" placeholder="Ej: 1">
+          </div>
+        </div>
+
+        <!-- Campo Activo (Común para todas las secciones) -->
+        <div class="modal-form-group checkbox-group">
+          <input type="checkbox" id="form-activo" name="activo" checked>
+          <label for="form-activo">Visible públicamente (Activo)</label>
+        </div>
+
+      </div>
+
+      <footer class="modal-footer">
+        <button type="button" class="btn-modal btn-modal-cancel" id="modal-cancel-btn">Cancelar</button>
+        <button type="submit" class="btn-modal btn-modal-save">Guardar Cambios</button>
+      </footer>
+    </form>
+
+  </div>
+</div>

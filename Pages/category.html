@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo | Topitop</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Common and Custom CSS -->
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/category.css">
+</head>
+
+<body>
+
+    <!-- Promotion Bar -->
+    <div class="promo-bar">
+        *50% DE DESCUENTO EN PRENDAS SELECCIONADAS*
+    </div>
+
+    <!-- Header -->
+    <header class="main-header">
+        <nav class="nav-links" id="nav-links">
+            <!-- Rendered dynamically via navigation.js -->
+        </nav>
+
+        <div class="logo">
+            <a href="../index.html">Topitop</a>
+        </div>
+
+        <div class="header-actions">
+            <a href="#"><i class="fa-regular fa-user"></i></a>
+            <a href="#"><i class="fa-solid fa-bag-shopping"></i></a>
+            <a href="#"><i class="fa-regular fa-heart"></i></a>
+            <div class="search-box">
+                <input type="text" placeholder="¿Qué estás buscando?">
+                <button><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+        </div>
+
+        <!-- Botón hamburguesa (solo visible en móvil) -->
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Abrir menú">
+            <i class="fa-solid fa-bars" id="hamburger-icon"></i>
+        </button>
+    </header>
+
+    <!-- Breadcrumbs -->
+    <div class="breadcrumb-container">
+        <a href="../index.html">Inicio</a> / 
+        <a href="#" id="breadcrumb-collection">Colección</a> / 
+        <span class="current" id="breadcrumb-category">Categoría</span>
+    </div>
+
+    <!-- Page Banner Hero -->
+    <section class="category-hero">
+        <h1 id="category-title">Cargando...</h1>
+        <p id="category-description">Espere un momento por favor...</p>
+    </section>
+
+    <!-- Category Main Catalog -->
+    <main class="category-container">
+        <!-- Sidebar Filters -->
+        <aside class="filters-sidebar">
+            <div class="filter-section">
+                <h3 class="filter-title">Filtrar por Color</h3>
+                <ul class="filter-options" id="colors-filter-list">
+                    <!-- Loaded dynamically -->
+                </ul>
+            </div>
+
+            <div class="filter-section">
+                <h3 class="filter-title">Talla</h3>
+                <div class="size-grid" id="sizes-filter-grid">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3 class="filter-title">Precio</h3>
+                <ul class="filter-options" id="price-filter-list">
+                    <li><label><input type="checkbox" class="price-range-chk" data-min="0" data-max="50"> S/ 0 - S/ 50</label></li>
+                    <li><label><input type="checkbox" class="price-range-chk" data-min="50" data-max="100"> S/ 50 - S/ 100</label></li>
+                    <li><label><input type="checkbox" class="price-range-chk" data-min="100" data-max="150"> S/ 100 - S/ 150</label></li>
+                    <li><label><input type="checkbox" class="price-range-chk" data-min="150" data-max="999999"> Más de S/ 150</label></li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Product Grid Catalog -->
+        <div class="products-list-wrap">
+            <div class="catalog-toolbar">
+                <span id="products-count-label">Mostrando 0 productos</span>
+                <select class="sort-select" id="sort-products-select">
+                    <option value="recomendados">Recomendados</option>
+                    <option value="precio-asc">Precio: de menor a mayor</option>
+                    <option value="precio-desc">Precio: de mayor a menor</option>
+                </select>
+            </div>
+
+            <div class="products-grid-catalog" id="products-grid-catalog">
+                <!-- Loaded dynamically via categoryLoader.js -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-logo">
+            <a href="../index.html">Topitop</a>
+        </div>
+
+        <div class="footer-columns">
+            <div class="footer-col">
+                <div class="footer-heading encabezado-acordeon-footer">
+                    Topitop <span class="footer-chevron"><i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+                <div class="contenido-columna-footer">
+                    <a href="../pages-footer/Nosotros.html">Nosotros</a>
+                    <a href="../pages-footer/CorporacionTopitop.html">Corporación Topitop</a>
+                    <a href="../pages-footer/CertificacionOEA.html">Certificación OEA</a>
+                    <a href="../pages-footer/Tiendas.html">Tiendas</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <div class="footer-heading encabezado-acordeon-footer">
+                    Atención al cliente <span class="footer-chevron"><i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+                <div class="contenido-columna-footer">
+                    <a href="../pages-footer/PreguntasFrecuentes.html">Preguntas frecuentes</a>
+                    <a href="../pages-footer/TerminosCondiciones.html">Términos y condiciones</a>
+                    <a href="../pages-footer/CambiosDevoluciones.html">Cambios y devoluciones</a>
+                    <a href="../pages-footer/BasesLegales.html">Bases legales</a>
+                    <a href="../pages-footer/LibroReclamaciones.html"><i class="fa-solid fa-book-open"></i> Libro de reclamaciones</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <div class="footer-heading encabezado-acordeon-footer">
+                    Contáctanos <span class="footer-chevron"><i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+                <div class="contenido-columna-footer">
+                    <p>Horario de atención:<br>Lun-Vie 9:00 am a 6:00 pm</p>
+                    <div class="social-media">
+                        <p>Social media</p>
+                        <div class="social-icons">
+                            <a href="https://www.youtube.com/user/TopiTopPeru"><i class="fa-brands fa-youtube"></i></a>
+                            <a href="https://www.instagram.com/topitop_pe/"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="https://www.linkedin.com/company/topitop/"><i class="fa-brands fa-linkedin"></i></a>
+                            <a href="https://www.facebook.com/Topitop.peru/?ref=br_rs"><i class="fa-brands fa-facebook"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-col">
+                <div class="footer-heading encabezado-acordeon-footer">
+                    Información <span class="footer-chevron"><i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+                <div class="contenido-columna-footer">
+                    <p>Razón Social: TRADING<br>FASHION LINE S.A.</p>
+                    <p>RUC: 20501057682</p>
+                    <p>Dirección Legal: Av. Santuario<br>Nro. 1323</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <span>Topitop © 2026</span>
+            <span>Términos &amp; Condiciones y Políticas de Privacidad</span>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/51999999999" class="whatsapp-float" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <script type="module" src="../js/main.js"></script>
+    <script type="module" src="../js/categoryLoader.js"></script>
+</body>
+
+</html>
