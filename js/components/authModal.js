@@ -222,11 +222,27 @@ function setupFormSubmissions(modalElement, closeCallback) {
 
   if (loginForm) {
     loginForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const userEmail = document.getElementById(SELECTORS.loginEmailInputId).value;
-      alert(`¡Bienvenido de nuevo a Topitop, ${userEmail}!`);
-      closeCallback();
-    });
+    event.preventDefault();
+
+    const userEmail = document.getElementById(SELECTORS.loginEmailInputId).value;
+    const password = document.getElementById('login-password').value;
+
+    // 🔐 LOGIN ADMIN OCULTO
+    if (
+      userEmail === 'ADMIN@TOPITOP.COM' &&
+      password === 'ADMINTOPITOP'
+    ) {
+      alert('👑 Bienvenido Administrador');
+
+      window.open("src/views/admin/login.html", "_blank");;
+
+      return;
+    }
+
+    // 👤 LOGIN NORMAL
+    alert(`¡Bienvenido de nuevo a Topitop, ${userEmail}!`);
+    closeCallback();
+  });
   }
 
   if (registerForm) {
