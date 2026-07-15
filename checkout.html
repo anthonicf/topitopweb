@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar Compra | Topitop</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Great+Vibes&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/checkout.css">
+</head>
+
+<body>
+
+    <!-- Promotion Bar -->
+    <div class="promo-bar">
+        *50% DE DESCUENTO EN PRENDAS SELECCIONADAS*
+    </div>
+
+    <!-- Header -->
+    <header class="main-header">
+        <nav class="nav-links" id="nav-links">
+            <!-- Loaded dynamically via navigation.js -->
+        </nav>
+
+        <div class="logo">
+            <a href="index.html">Topitop</a>
+        </div>
+
+        <div class="header-actions">
+            <a href="#"><i class="fa-regular fa-user"></i></a>
+            <a href="#"><i class="fa-solid fa-bag-shopping"></i></a>
+            <a href="#"><i class="fa-regular fa-heart"></i></a>
+            <div class="search-box">
+                <input type="text" placeholder="¿Qué estás buscando?">
+                <button><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+        </div>
+
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Abrir menú">
+            <i class="fa-solid fa-bars" id="hamburger-icon"></i>
+        </button>
+    </header>
+
+    <!-- Breadcrumbs -->
+    <div class="breadcrumb-container">
+        <a href="index.html">Inicio</a> /
+        <span class="current">Finalizar Compra</span>
+    </div>
+
+    <!-- Checkout Steps Indicator -->
+    <div class="checkout-steps" id="checkoutSteps">
+        <div class="checkout-step active" data-step="1">
+            <span class="step-circle">1</span>
+            <span class="step-label">Carrito</span>
+        </div>
+        <div class="checkout-step-line"></div>
+        <div class="checkout-step" data-step="2">
+            <span class="step-circle">2</span>
+            <span class="step-label">Envío y Pago</span>
+        </div>
+        <div class="checkout-step-line"></div>
+        <div class="checkout-step" data-step="3">
+            <span class="step-circle">3</span>
+            <span class="step-label">Confirmación</span>
+        </div>
+    </div>
+
+    <main class="checkout-main-wrapper">
+
+        <!-- EMPTY CART STATE -->
+        <div id="checkoutEmptyState" class="checkout-empty-state" style="display:none;">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <h2>Tu carrito está vacío</h2>
+            <p>Agrega productos a tu carrito antes de continuar con la compra.</p>
+            <a href="index.html" class="btn-primary">Ir a comprar</a>
+        </div>
+
+        <!-- CHECKOUT FORM STATE -->
+        <div id="checkoutFormState" class="checkout-grid">
+
+            <!-- LEFT COLUMN: Shipping + Payment -->
+            <div class="checkout-form-column">
+
+                <!-- Shipping Address -->
+                <section class="checkout-card">
+                    <h2 class="checkout-card-title"><i class="fa-solid fa-truck-fast"></i> Dirección de envío</h2>
+                    <form id="shippingForm" class="checkout-form" novalidate>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="shipFullName">Nombre completo</label>
+                                <input type="text" id="shipFullName" name="shipFullName" placeholder="Ej. María Fernández" required>
+                                <span class="field-error">Ingresa tu nombre completo</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="shipPhone">Teléfono</label>
+                                <input type="tel" id="shipPhone" name="shipPhone" placeholder="Ej. 987 654 321" required>
+                                <span class="field-error">Ingresa un teléfono válido</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="shipAddress">Dirección</label>
+                            <input type="text" id="shipAddress" name="shipAddress" placeholder="Av./Calle, número, urbanización" required>
+                            <span class="field-error">Ingresa tu dirección</span>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="shipDepartamento">Departamento</label>
+                                <select id="shipDepartamento" name="shipDepartamento" required>
+                                    <option value="">Selecciona...</option>
+                                    <option value="Lima">Lima</option>
+                                    <option value="Arequipa">Arequipa</option>
+                                    <option value="La Libertad">La Libertad</option>
+                                    <option value="Piura">Piura</option>
+                                    <option value="Cusco">Cusco</option>
+                                    <option value="Lambayeque">Lambayeque</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                                <span class="field-error">Selecciona un departamento</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="shipDistrito">Distrito</label>
+                                <input type="text" id="shipDistrito" name="shipDistrito" placeholder="Ej. Miraflores" required>
+                                <span class="field-error">Ingresa tu distrito</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="shipReferencia">Referencia (opcional)</label>
+                            <input type="text" id="shipReferencia" name="shipReferencia" placeholder="Ej. Frente al parque, edificio azul">
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Payment Method -->
+                <section class="checkout-card">
+                    <h2 class="checkout-card-title"><i class="fa-solid fa-credit-card"></i> Método de pago</h2>
+
+                    <div class="payment-methods-tabs" id="paymentTabs">
+                        <button type="button" class="payment-tab active" data-method="tarjeta">
+                            <i class="fa-regular fa-credit-card"></i> Tarjeta
+                        </button>
+                        <button type="button" class="payment-tab" data-method="yape">
+                            <span class="payment-tab-badge yape-badge">yape</span>
+                        </button>
+                        <button type="button" class="payment-tab" data-method="plin">
+                            <span class="payment-tab-badge plin-badge">plin</span>
+                        </button>
+                    </div>
+
+                    <!-- Card payment fields -->
+                    <div class="payment-panel active" id="panel-tarjeta">
+                        <form id="cardForm" class="checkout-form" novalidate>
+                            <div class="form-group">
+                                <label for="cardName">Nombre del titular</label>
+                                <input type="text" id="cardName" name="cardName" placeholder="Como figura en la tarjeta" required>
+                                <span class="field-error">Ingresa el nombre del titular</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="cardNumber">Número de tarjeta</label>
+                                <div class="card-number-wrap">
+                                    <input type="text" id="cardNumber" name="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19" required>
+                                    <i class="fa-regular fa-credit-card card-number-icon"></i>
+                                </div>
+                                <span class="field-error">Ingresa un número de tarjeta válido (16 dígitos)</span>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="cardExpiry">Vencimiento</label>
+                                    <input type="text" id="cardExpiry" name="cardExpiry" placeholder="MM/AA" maxlength="5" required>
+                                    <span class="field-error">Formato MM/AA</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cardCvv">CVV</label>
+                                    <input type="text" id="cardCvv" name="cardCvv" placeholder="123" maxlength="4" required>
+                                    <span class="field-error">CVV inválido</span>
+                                </div>
+                            </div>
+                            <p class="payment-secure-note"><i class="fa-solid fa-lock"></i> Tus datos de pago están protegidos y encriptados.</p>
+                        </form>
+                    </div>
+
+                    <!-- Yape payment fields -->
+                    <div class="payment-panel" id="panel-yape">
+                        <div class="qr-payment-box">
+                            <div class="qr-code-mock">
+                                <i class="fa-solid fa-qrcode"></i>
+                            </div>
+                            <p class="qr-instructions">Escanea el código QR desde tu app Yape o ingresa tu número asociado.</p>
+                            <div class="form-group qr-phone-group">
+                                <label for="yapePhone">Número Yape</label>
+                                <input type="tel" id="yapePhone" name="yapePhone" placeholder="Ej. 987 654 321" maxlength="9">
+                                <span class="field-error">Ingresa un número válido (9 dígitos)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Plin payment fields -->
+                    <div class="payment-panel" id="panel-plin">
+                        <div class="qr-payment-box">
+                            <div class="qr-code-mock plin-qr">
+                                <i class="fa-solid fa-qrcode"></i>
+                            </div>
+                            <p class="qr-instructions">Escanea el código QR desde tu app Plin o ingresa tu número asociado.</p>
+                            <div class="form-group qr-phone-group">
+                                <label for="plinPhone">Número Plin</label>
+                                <input type="tel" id="plinPhone" name="plinPhone" placeholder="Ej. 987 654 321" maxlength="9">
+                                <span class="field-error">Ingresa un número válido (9 dígitos)</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- RIGHT COLUMN: Order Summary -->
+            <div class="checkout-summary-column">
+                <section class="checkout-card order-summary-card">
+                    <h2 class="checkout-card-title"><i class="fa-solid fa-receipt"></i> Resumen del pedido</h2>
+
+                    <div class="order-summary-items" id="orderSummaryItems">
+                        <!-- Rendered dynamically -->
+                    </div>
+
+                    <div class="order-summary-totals" id="orderSummaryTotals">
+                        <!-- Rendered dynamically -->
+                    </div>
+
+                    <button type="button" class="btn-primary checkout-submit-btn" id="checkoutSubmitBtn">
+                        <i class="fa-solid fa-lock"></i> Finalizar compra
+                    </button>
+                    <a href="index.html" class="continue-shopping-link">
+                        <i class="fa-solid fa-arrow-left"></i> Seguir comprando
+                    </a>
+                </section>
+            </div>
+        </div>
+
+        <!-- SUCCESS STATE -->
+        <div id="checkoutSuccessState" class="checkout-success-state" style="display:none;">
+            <div class="success-icon-wrap">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h2>¡Compra realizada con éxito!</h2>
+            <p>Gracias por tu compra en Topitop. Hemos enviado la confirmación a tu correo.</p>
+            <div class="success-order-details">
+                <div class="success-order-row">
+                    <span>Número de pedido</span>
+                    <strong id="successOrderNumber">-</strong>
+                </div>
+                <div class="success-order-row">
+                    <span>Método de pago</span>
+                    <strong id="successPaymentMethod">-</strong>
+                </div>
+                <div class="success-order-row">
+                    <span>Total pagado</span>
+                    <strong id="successTotal">-</strong>
+                </div>
+                <div class="success-order-row">
+                    <span>Envío a</span>
+                    <strong id="successAddress">-</strong>
+                </div>
+            </div>
+            <a href="index.html" class="btn-primary">Volver al inicio</a>
+        </div>
+
+        <!-- Processing overlay -->
+        <div id="checkoutProcessingOverlay" class="checkout-processing-overlay" style="display:none;">
+            <div class="checkout-spinner"></div>
+            <p>Procesando tu pago de forma segura...</p>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-logo">
+            <a href="index.html">Topitop</a>
+        </div>
+
+        <div class="footer-columns">
+            <div class="footer-col">
+                <div class="footer-heading encabezado-acordeon-footer">
+                    Topitop <span class="footer-chevron"><i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+                <div class="contenido-columna-footer">
+                    <a href="pages-footer/Nosotros.html">Nosotros</a>
+                    <a href="pages-footer/CorporacionTopitop.html">Corporación Topitop</a>
+                    <a href="pages-footer/CertificacionOEA.html">Certificación OEA</a>
+                    <a href="pages-footer/Tiendas.html">Tiendas</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <div class="footer-heading encabezado-acordeon-footer">
+                    Atención al cliente <span class="footer-chevron"><i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+                <div class="contenido-columna-footer">
+                    <a href="pages-footer/PreguntasFrecuentes.html">Preguntas frecuentes</a>
+                    <a href="pages-footer/TerminosCondiciones.html">Términos y condiciones</a>
+                    <a href="pages-footer/CambiosDevoluciones.html">Cambios y devoluciones</a>
+                    <a href="pages-footer/BasesLegales.html">Bases legales</a>
+                    <a href="pages-footer/LibroReclamaciones.html"><i class="fa-solid fa-book-open"></i> Libro de reclamaciones</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <div class="footer-heading encabezado-acordeon-footer">
+                    Contáctanos <span class="footer-chevron"><i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+                <div class="contenido-columna-footer">
+                    <p>Horario de atención:<br>Lun-Vie 9:00 am a 6:00 pm</p>
+                    <div class="social-media">
+                        <p>Social media</p>
+                        <div class="social-icons">
+                            <a href="https://www.youtube.com/user/TopiTopPeru"><i class="fa-brands fa-youtube"></i></a>
+                            <a href="https://www.instagram.com/topitop_pe/"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="https://www.linkedin.com/company/topitop/"><i class="fa-brands fa-linkedin"></i></a>
+                            <a href="https://www.facebook.com/Topitop.peru/?ref=br_rs"><i class="fa-brands fa-facebook"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-col">
+                <div class="footer-heading encabezado-acordeon-footer">
+                    Información <span class="footer-chevron"><i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+                <div class="contenido-columna-footer">
+                    <p>Razón Social: TRADING<br>FASHION LINE S.A.</p>
+                    <p>RUC: 20501057682</p>
+                    <p>Dirección Legal: Av. Santuario<br>Nro. 1323</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <span>Topitop © 2026</span>
+            <span>Términos &amp; Condiciones y Políticas de Privacidad</span>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/51941074074" class="whatsapp-float" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <script type="module" src="js/checkout.js"></script>
+</body>
+
+</html>

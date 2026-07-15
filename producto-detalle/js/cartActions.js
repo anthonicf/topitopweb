@@ -7,6 +7,7 @@
 import { ELEMENTS } from './domElements.js';
 import { obtenerTallaSeleccionada } from './sizeSelector.js';
 import { obtenerCantidad } from './quantitySelector.js';
+import { addToCart, showCartToast, openDrawer } from '../../js/components/cart.js';
 
 let activeProduct = null;
 
@@ -55,7 +56,8 @@ export function actualizarBotonCarrito() {
 }
 
 /**
- * Simulates adding the selected product details to the shopping cart.
+ * Adds the selected product details to the real shopping cart (persisted in LocalStorage)
+ * and gives the user visual feedback via a toast notification and the cart drawer.
  */
 function agregarAlCarrito() {
   if (!activeProduct) return;
@@ -71,15 +73,12 @@ function agregarAlCarrito() {
     return;
   }
 
-  const precioTotal = (activeProduct.precioActual * cantidad).toFixed(2);
+  addToCart(activeProduct, talla, cantidad);
 
-  // Success alert
-  alert(
-    `¡Producto agregado al carrito!\n\n` +
-    `Prenda: ${activeProduct.nombre}\n` +
-    `Talla seleccionada: ${talla}\n` +
-    `Cantidad: ${cantidad}\n` +
-    `Precio Unitario: S/ ${activeProduct.precioActual.toFixed(2)}\n` +
-    `Monto Total: S/ ${precioTotal}`
-  );
+  showCartToast(`${activeProduct.nombre} (Talla ${talla}) agregado al carrito`);
+
+  // Brief delay so the toast is visible before the drawer slides in
+  setTimeout(() => {
+    openDrawer();
+  }, 350);
 }
