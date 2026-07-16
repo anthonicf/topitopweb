@@ -33,9 +33,12 @@ const AUTH_MODAL_HTML = `
 <div class="auth-modal" id="${SELECTORS.authModalId}">
   <div class="auth-modal-overlay" id="${SELECTORS.authModalOverlayId}"></div>
   <div class="auth-modal-container">
-    <button class="auth-modal-close" id="${SELECTORS.authModalCloseId}" aria-label="Cerrar modal">
-      <i class="fa-solid fa-xmark"></i>
-    </button>
+    <div class="auth-modal-header">
+      <span class="auth-modal-logo">Topitop</span>
+      <button class="auth-modal-close" id="${SELECTORS.authModalCloseId}" aria-label="Cerrar modal">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
     <div class="auth-modal-content">
       <div class="auth-tabs">
         <button class="auth-tab active" data-tab="login">Iniciar Sesión</button>
@@ -219,11 +222,27 @@ function setupFormSubmissions(modalElement, closeCallback) {
 
   if (loginForm) {
     loginForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const userEmail = document.getElementById(SELECTORS.loginEmailInputId).value;
-      alert(`¡Bienvenido de nuevo a Topitop, ${userEmail}!`);
-      closeCallback();
-    });
+    event.preventDefault();
+
+    const userEmail = document.getElementById(SELECTORS.loginEmailInputId).value;
+    const password = document.getElementById('login-password').value;
+
+    // 🔐 LOGIN ADMIN OCULTO
+    if (
+      userEmail === 'ADMIN@TOPITOP.COM' &&
+      password === 'ADMINTOPITOP'
+    ) {
+      alert('👑 Bienvenido Administrador');
+
+      window.open("src/views/admin/login.html", "_blank");;
+
+      return;
+    }
+
+    // 👤 LOGIN NORMAL
+    alert(`¡Bienvenido de nuevo a Topitop, ${userEmail}!`);
+    closeCallback();
+  });
   }
 
   if (registerForm) {

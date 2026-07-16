@@ -1,0 +1,676 @@
+/* ==========================================================
+   ESTILOS UNIFICADOS — PÁGINAS DE FOOTER
+   Incluye estilos de: Nosotros, Corporación, OEA, Tiendas,
+   Preguntas Frecuentes, Términos, Cambios, Bases, Reclamos
+   ========================================================== */
+
+/* ----------------------------------------------------------
+   BANNER PRINCIPAL (HERO)
+   ---------------------------------------------------------- */
+.banner-pagina {
+    background: linear-gradient(rgba(40, 20, 25, 0.55), rgba(40, 20, 25, 0.55)) center/cover no-repeat, #3a1010;
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+
+.banner-nosotros {
+    background-image:
+        linear-gradient(rgba(40, 20, 25, 0.55), rgba(40, 20, 25, 0.55)),
+        url('../../images/Footer/Nosotros/banner-hero.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.contenido-banner {
+    max-width: 700px;
+    padding: 0 20px;
+}
+
+.etiqueta-banner {
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-bottom: 0.75rem;
+}
+
+.banner-pagina h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 400;
+    margin-bottom: 0.75rem;
+}
+
+.divisor-claro {
+    width: 60px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.6);
+    margin: 1rem auto;
+}
+
+.descripcion-banner {
+    font-size: 1rem;
+    opacity: 0.85;
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+/* ----------------------------------------------------------
+   MIGAS DE PAN (BREADCRUMB)
+   ---------------------------------------------------------- */
+.migas-de-pan {
+    background: #f9f7f5;
+    padding: 0.75rem 4rem;
+    font-size: 0.8rem;
+    color: #888;
+    border-bottom: 1px solid #eee;
+}
+
+.migas-de-pan a {
+    color: #7c1416;
+    text-decoration: none;
+}
+
+.migas-de-pan a:hover {
+    text-decoration: underline;
+}
+
+.migas-de-pan span {
+    margin: 0 0.4rem;
+}
+
+/* ----------------------------------------------------------
+   SECCIONES GENERALES
+   ---------------------------------------------------------- */
+.seccion-contenido {
+    padding: 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.seccion-alternativa {
+    background: #f9f7f5;
+}
+
+.titulo-seccion {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: #7c1416;
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+}
+
+.subtitulo-seccion {
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #7c1416;
+    opacity: 0.7;
+    margin-bottom: 1.5rem;
+}
+
+.divisor-rojo {
+    width: 50px;
+    height: 2px;
+    background: #7c1416;
+    margin-bottom: 2rem;
+}
+
+.divisor-rojo-centrado {
+    width: 50px;
+    height: 2px;
+    background: #7c1416;
+    margin: 1rem auto 2rem;
+}
+
+.parrafo-contenido {
+    font-size: 0.95rem;
+    line-height: 1.85;
+    color: #444;
+    margin-bottom: 1.25rem;
+}
+
+.encabezado-centrado {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.encabezado-centrado .divisor-rojo {
+    margin: 1rem auto 0;
+}
+
+/* ----------------------------------------------------------
+   DOS COLUMNAS
+   ---------------------------------------------------------- */
+.dos-columnas {
+    display: flex;
+    gap: 5rem;
+    align-items: center;
+}
+
+.dos-columnas.invertida {
+    flex-direction: row-reverse;
+}
+
+.dos-columnas > * {
+    flex: 1;
+}
+
+.imagen-seccion {
+    width: 100%;
+    display: block;
+    border-radius: 4px;
+    object-fit: cover;
+    max-height: 420px;
+}
+
+/* ----------------------------------------------------------
+   TARJETAS DE INFORMACIÓN
+   ---------------------------------------------------------- */
+.cuadricula-tarjetas {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.tarjeta-info {
+    background: white;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    border-radius: 6px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    cursor: default;
+}
+
+.tarjeta-info:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px rgba(124, 20, 22, 0.12);
+}
+
+.icono-tarjeta {
+    width: 65px;
+    height: 65px;
+    border: 1.5px solid #7c1416;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.25rem;
+    font-size: 1.6rem;
+    color: #7c1416;
+}
+
+.tarjeta-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 400;
+    font-size: 1.15rem;
+    margin-bottom: 0.75rem;
+    color: #333;
+}
+
+.tarjeta-info p {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: #666;
+}
+
+/* ----------------------------------------------------------
+   RESUMEN CON ÍCONOS (Cambios y Devoluciones)
+   ---------------------------------------------------------- */
+.resumen-iconos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.item-resumen {
+    text-align: center;
+    padding: 1.5rem;
+    background: #f9f7f5;
+    border-radius: 8px;
+}
+
+.icono-resumen {
+    font-size: 2rem;
+    color: #7c1416;
+    margin-bottom: 0.75rem;
+}
+
+.titulo-resumen {
+    font-weight: 700;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.descripcion-resumen {
+    font-size: 0.82rem;
+    color: #666;
+    margin-top: 0.35rem;
+}
+
+/* ----------------------------------------------------------
+   CONTENEDOR OEA (Escudo)
+   ---------------------------------------------------------- */
+.contenedor-escudo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f9f7f5;
+    border-radius: 8px;
+    padding: 3rem;
+    text-align: center;
+}
+
+.icono-escudo {
+    font-size: 5rem;
+    color: #7c1416;
+    margin-bottom: 1rem;
+}
+
+.titulo-escudo {
+    font-weight: 700;
+    color: #7c1416;
+    font-size: 1.1rem;
+}
+
+.descripcion-escudo {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 0.5rem;
+}
+
+/* ----------------------------------------------------------
+   PREGUNTAS FRECUENTES (FAQ)
+   Desktop: respuestas siempre visibles
+   Móvil:   acordeón gestionado por faqAcordeon.js
+   ---------------------------------------------------------- */
+.lista-preguntas {
+    margin-top: 1.5rem;
+}
+
+.item-pregunta {
+    border-bottom: 1px solid #e5ded6;
+}
+
+.pregunta-encabezado {
+    padding: 1.1rem 0;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #7c1416;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+}
+
+.icono-flecha {
+    display: none; /* oculto en desktop */
+    font-size: 0.75rem;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+}
+
+.respuesta-pregunta {
+    padding: 0 0 1.1rem 0;
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: #555;
+    display: block; /* siempre visible en desktop */
+}
+
+/* Móvil: acordeón */
+@media (max-width: 768px) {
+    .pregunta-encabezado {
+        cursor: pointer;
+    }
+
+    .icono-flecha {
+        display: inline-flex;
+    }
+
+    .respuesta-pregunta {
+        display: none; /* oculta por defecto */
+        padding-bottom: 1rem;
+    }
+
+    .item-pregunta.pregunta-abierta .respuesta-pregunta {
+        display: block;
+    }
+
+    .item-pregunta.pregunta-abierta .icono-flecha {
+        transform: rotate(180deg);
+    }
+}
+
+/* ----------------------------------------------------------
+   TABLA DE DATOS
+   ---------------------------------------------------------- */
+.contenedor-tabla {
+    overflow-x: auto;
+    margin-top: 1.5rem;
+}
+
+.tabla-datos {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.tabla-datos th {
+    background: #7c1416;
+    color: white;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+.tabla-datos td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e5ded6;
+    vertical-align: top;
+}
+
+.tabla-datos tr:nth-child(even) td {
+    background: #f9f7f5;
+}
+
+/* ----------------------------------------------------------
+   GRID DE TIENDAS
+   ---------------------------------------------------------- */
+.cuadricula-tiendas {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.tarjeta-tienda {
+    background: white;
+    border: 1px solid #e5ded6;
+    border-radius: 6px;
+    padding: 1.5rem;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.tarjeta-tienda:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 28px rgba(124, 20, 22, 0.1);
+}
+
+.icono-tienda {
+    font-size: 1.5rem;
+    color: #7c1416;
+    margin-bottom: 0.75rem;
+}
+
+.tarjeta-tienda h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #7c1416;
+    margin-bottom: 0.5rem;
+}
+
+.tarjeta-tienda p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: #555;
+}
+
+.horario-tienda {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+/* ----------------------------------------------------------
+   CAJAS INFORMATIVAS
+   ---------------------------------------------------------- */
+.caja-informativa {
+    background: #f9f7f5;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.titulo-caja {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #7c1416;
+    margin-bottom: 0.5rem;
+}
+
+.texto-caja {
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: #555;
+}
+
+.nota-legal {
+    background: #f9f7f5;
+    border-left: 3px solid #7c1416;
+    padding: 1.25rem 1.5rem;
+    margin-top: 2.5rem;
+    border-radius: 0 4px 4px 0;
+}
+
+.nota-legal p {
+    font-size: 0.88rem;
+    color: #555;
+}
+
+/* ----------------------------------------------------------
+   TÍTULOS DE SUBSECCIÓN (h3 legales)
+   ---------------------------------------------------------- */
+.titulo-subseccion {
+    font-size: 1.1rem;
+    color: #7c1416;
+    margin: 2rem 0 0.75rem;
+    font-weight: 600;
+}
+
+/* ----------------------------------------------------------
+   CTA / ENLACE WHATSAPP
+   ---------------------------------------------------------- */
+.contenedor-cta {
+    text-align: center;
+    margin-top: 3rem;
+    padding: 2rem;
+    background: #f9f7f5;
+    border-radius: 8px;
+}
+
+.texto-cta {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 1rem;
+}
+
+.enlace-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #7c1416;
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+.enlace-whatsapp:hover {
+    background: #9e1a1d;
+    color: white;
+}
+
+/* ----------------------------------------------------------
+   LIBRO DE RECLAMACIONES — Layout
+   ---------------------------------------------------------- */
+.columnas-reclamo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+}
+
+/* ----------------------------------------------------------
+   FORMULARIO DE RECLAMO
+   ---------------------------------------------------------- */
+.formulario-reclamo {
+    background: white;
+    border: 1px solid #e5ded6;
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.cuadricula-formulario {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.grupo-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.campo-completo {
+    grid-column: 1 / -1;
+}
+
+.etiqueta-campo {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #7c1416;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.grupo-campo input,
+.grupo-campo select,
+.grupo-campo textarea {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 0.65rem 0.85rem;
+    font-size: 0.9rem;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.grupo-campo input:focus,
+.grupo-campo select:focus,
+.grupo-campo textarea:focus {
+    border-color: #7c1416;
+}
+
+.grupo-campo textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.boton-enviar {
+    background: #7c1416;
+    color: white;
+    border: none;
+    padding: 0.85rem 2.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+    letter-spacing: 0.5px;
+}
+
+.boton-enviar:hover {
+    background: #9e1a1d;
+}
+
+/* ==========================================================
+   DISEÑO RESPONSIVO
+   ========================================================== */
+@media (max-width: 1024px) {
+    .seccion-contenido {
+        padding: 3rem 2rem;
+    }
+    .cuadricula-tarjetas {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .cuadricula-tiendas {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .resumen-iconos {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .banner-pagina {
+        min-height: 60vh;
+    }
+    .banner-pagina h1 {
+        font-size: 2rem;
+    }
+    .migas-de-pan {
+        padding: 0.75rem 1.25rem;
+    }
+    .seccion-contenido {
+        padding: 2.5rem 1.25rem;
+    }
+    .dos-columnas,
+    .dos-columnas.invertida {
+        flex-direction: column;
+        gap: 2rem;
+    }
+    .cuadricula-tarjetas {
+        grid-template-columns: 1fr;
+    }
+    .cuadricula-tiendas {
+        grid-template-columns: 1fr;
+    }
+    .resumen-iconos {
+        grid-template-columns: 1fr;
+    }
+    .columnas-reclamo {
+        grid-template-columns: 1fr;
+    }
+    .cuadricula-formulario {
+        grid-template-columns: 1fr;
+    }
+    .campo-completo {
+        grid-column: 1;
+    }
+    .titulo-seccion {
+        font-size: 1.6rem;
+    }
+    .contenedor-escudo {
+        padding: 2rem;
+    }
+
+    /* FAQ: acordeón activo en móvil (cursor pointer ya está puesto por defecto) */
+    .item-pregunta > summary {
+        cursor: pointer;
+    }
+}
+
+@media (max-width: 480px) {
+    .banner-pagina {
+        min-height: 50vh;
+    }
+    .banner-pagina h1 {
+        font-size: 1.6rem;
+    }
+    .cuadricula-formulario {
+        gap: 1rem;
+    }
+}

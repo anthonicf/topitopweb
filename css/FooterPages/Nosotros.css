@@ -1,0 +1,80 @@
+.hero {
+    background: linear-gradient(rgba(40, 20, 25, 0.55), rgba(40, 20, 25, 0.55)),
+        url('../../images/Footer/Nosotros/banner-hero.jpg') center/cover no-repeat;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+
+.hero-contenido {
+    max-width: 700px;
+    padding: 0 20px;
+}
+
+.fila-dos-columas {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.fila-invertida {
+    flex-direction: row-reverse;
+}
+
+.columna-texto,
+.columna-imagen {
+    flex: 1;
+}
+
+.columna-imagen img {
+    width: 100%;
+    display: block;
+    border-radius: 4px;
+}
+
+.columna-texto p {
+    line-height: 1.8;
+    margin-bottom: 18px;
+}
+
+.tarjetas-contenedor {
+    /* Grid = un tablero de ajedrez: tú defines cuántas columnas tiene
+     el tablero y el navegador acomoda las piezas (tarjetas) dentro */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* 3 columnas de ancho IGUAL */
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.tarjeta {
+    background: white;
+    padding: 50px 35px;
+    /* el "colchón de aire" interno, para que
+                               el texto no toque el borde de la caja */
+    text-align: center;
+    border-radius: 6px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    /* sombra suave, como si
+                               la tarjeta flotara un poco sobre el fondo */
+}
+
+.tarjeta-icono {
+    width: 70px;
+    height: 70px;
+    border: 1px solid #a33b4e;
+    border-radius: 50%;
+    /* 50% en una caja cuadrada = círculo perfecto */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 1.8rem;
+    color: #a33b4e;
+}

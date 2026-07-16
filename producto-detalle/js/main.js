@@ -15,11 +15,13 @@ import { inicializarAcordeones } from './accordion.js';
 import { inicializarAccionesCompartir } from './shareActions.js';
 import { initMobileNavigation } from '../../js/components/navigation.js';
 import { initFavorites, updateNavbarBadge } from '../../js/components/favorites.js';
+import { initCart } from '../../js/components/cart.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Initialize general site features (Header navigation & Favorites drawer)
+  // Initialize general site features (Header navigation, Favorites drawer & Cart drawer)
   initMobileNavigation();
   initFavorites();
+  initCart();
 
   // Load and bootstrap product details
   bootstrapProductDetail();
