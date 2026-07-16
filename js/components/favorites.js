@@ -215,8 +215,10 @@ function extractProductFromCard(card) {
 
   if (!nombre) return null;
 
+  const id = card.getAttribute('data-product-id') || card.dataset.productId || slugify(nombre);
+
   return {
-    id: slugify(nombre),
+    id,
     nombre,
     urlImagen: getAbsoluteOrRootRelativeImg(urlImagen),
     precio,

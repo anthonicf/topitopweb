@@ -123,7 +123,7 @@ function inicializarFavoritosDetalle(producto) {
   if (!favHeartBtn) return;
 
   const storageKey = 'topitop_favorites';
-  const slugId = slugify(producto.nombre);
+  const slugId = producto.id || slugify(producto.nombre);
 
   const getFavs = () => JSON.parse(localStorage.getItem(storageKey) || '[]');
   
